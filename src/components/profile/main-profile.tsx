@@ -167,19 +167,7 @@ export default function MainProfile({ user }: prop) {
 
   return (
     <>
-      <div className="absolute inset-0 z-0">
-        <Particles
-          particleColors={["#ffffff", "#ffffff"]}
-          particleCount={200}
-          particleSpread={10}
-          speed={0.1}
-          particleBaseSize={100}
-          moveParticlesOnHover={false}
-          alphaParticles={false}
-          disableRotation={false}
-        />
-      </div>
-      <main className="relative z-10 py-8 md:py-16">
+      <main className="relative z-10 py-8 md:py-16 mt-10">
         <div className="mx-auto flex w-full max-w-2xl flex-col gap-5">
           <ProfileHeader
             fullName={

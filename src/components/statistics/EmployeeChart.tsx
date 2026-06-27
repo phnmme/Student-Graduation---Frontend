@@ -2,40 +2,57 @@
 "use client";
 
 import {
-  Bar,
   BarChart,
-  CartesianGrid,
+  Bar,
   XAxis,
   YAxis,
+  CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
 } from "recharts";
-
-export interface EmploymentSectorItem {
-  year: number;
-  private: number;
-  government: number;
-}
+import { EmploymentSectorItem } from "@/types/staticType";
 
 interface SectorComparisonChartProps {
   data: EmploymentSectorItem[];
 }
 
+const SECTOR_CONFIG = [
+  { key: "private", label: "ภาคเอกชน", color: "#3B82F6" },
+  { key: "government", label: "ภาครัฐ", color: "#F59E0B" },
+  { key: "stateEnterprise", label: "รัฐวิสาหกิจ", color: "#8B5CF6" },
+  { key: "selfEmployed", label: "ผู้ประกอบการ", color: "#10B981" },
+];
+
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
+    const total = payload.reduce((s: number, p: any) => s + (p.value ?? 0), 0);
     return (
-      <div className="rounded-xl border border-white/10 bg-bluez-tone-1/90 px-4 py-3 shadow-xl backdrop-blur-sm">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-bluez-tone-2">
-          ปี {label}
+      <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-lg">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-gray-400">
+          ปีที่จบ {label}
         </p>
-        {payload.map((entry: any) => (
-          <p key={entry.name} className="text-sm" style={{ color: entry.fill }}>
-            {entry.name === "private" ? "ภาคเอกชน" : "ภาครัฐ"}
-            {": "}
-            <span className="font-bold">{entry.value.toLocaleString()}</span>
-          </p>
-        ))}
+        {[...payload].reverse().map((entry: any) => {
+          const cfg = SECTOR_CONFIG.find((s) => s.key === entry.dataKey);
+          return (
+            <p
+              key={entry.dataKey}
+              className="text-sm"
+              style={{ color: cfg?.color }}
+            >
+              {cfg?.label}:{" "}
+              <span className="font-bold">
+                {entry.value} คน{" "}
+                <span className="font-normal text-gray-400">
+                  ({total ? ((entry.value / total) * 100).toFixed(1) : 0}%)
+                </span>
+              </span>
+            </p>
+          );
+        })}
+        <p className="mt-1 border-t border-gray-100 pt-1 text-xs text-gray-400">
+          รวม {total} คน
+        </p>
       </div>
     );
   }
@@ -48,131 +65,115 @@ export function SectorComparisonChart({ data }: SectorComparisonChartProps) {
     year: item.year.toString(),
   }));
 
-  const totalPrivate = data.reduce((sum, d) => sum + d.private, 0);
-  const totalGovernment = data.reduce((sum, d) => sum + d.government, 0);
-  const total = totalPrivate + totalGovernment;
-
-  const privatePercent = total
-    ? ((totalPrivate / total) * 100).toFixed(1)
-    : "0";
-  const governmentPercent = total
-    ? ((totalGovernment / total) * 100).toFixed(1)
-    : "0";
-
-  const trend =
-    data.length >= 2
-      ? (
-          ((data[data.length - 1].private - data[0].private) /
-            (data[0].private || 1)) *
-          100
-        ).toFixed(1)
-      : "0";
-
-  const trendUp = Number(trend) >= 0;
+  const totals = SECTOR_CONFIG.map((cfg) => ({
+    ...cfg,
+    total: data.reduce(
+      (s, d) => s + (d[cfg.key as keyof EmploymentSectorItem] as number),
+      0
+    ),
+  }));
+  const grandTotal = totals.reduce((s, t) => s + t.total, 0);
 
   return (
-    <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md">
-      {/* Header */}
+    <div className="w-full rounded-2xl border border-iptm-dark-gray/10 p-6 shadow-md">
       <div className="mb-6">
         <div className="mb-1 flex items-center gap-2">
           <span className="h-3 w-3 rounded-full bg-amber-400" />
-          <p className="text-xs font-semibold uppercase tracking-widest text-bluez-tone-2">
+          <p className="text-xs font-semibold uppercase tracking-widest text-iptm-dark-gray">
             Employment Sector
           </p>
         </div>
-        <h2 className="text-lg font-bold text-white">
-          การทำงานภาคเอกชนและภาครัฐ
+        <h2 className="text-lg font-bold text-iptm-black">
+          สถิติการทำงานแยกตามภาคส่วน
         </h2>
-        <p className="mt-0.5 text-sm text-bluez-tone-2/70">
-          เปรียบเทียบจำนวนบัณฑิตที่ทำงานในแต่ละภาคส่วน
+        <p className="mt-0.5 text-sm text-iptm-dark-gray">
+          สัดส่วนบัณฑิตในภาคเอกชน ภาครัฐ รัฐวิสาหกิจ และผู้ประกอบการ
         </p>
       </div>
 
-      {/* Chart */}
-      <div className="h-[300px] w-full">
+      <div className="mb-5 flex flex-wrap gap-2">
+        {totals.map((t) => (
+          <div
+            key={t.key}
+            className="flex items-center gap-2 rounded-full border px-3 py-1.5"
+            style={{
+              borderColor: t.color + "33",
+              backgroundColor: t.color + "0f",
+            }}
+          >
+            <span
+              className="h-2 w-2 rounded-full"
+              style={{ backgroundColor: t.color }}
+            />
+            <span className="text-xs font-medium" style={{ color: t.color }}>
+              {t.label}{" "}
+              {grandTotal ? ((t.total / grandTotal) * 100).toFixed(1) : 0}%
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="h-[320px] w-full">
         <ResponsiveContainer>
           <BarChart
             data={chartData}
-            barGap={6}
-            margin={{ top: 5, right: 10, left: -10, bottom: 0 }}
+            margin={{ top: 10, right: 16, left: 0, bottom: 0 }}
+            barSize={36}
           >
             <CartesianGrid
               strokeDasharray="3 3"
               vertical={false}
-              stroke="rgba(255,255,255,0.07)"
+              stroke="#f0f0f0"
             />
             <XAxis
               dataKey="year"
+              tick={{ fill: "#6B7280", fontSize: 12 }}
               tickLine={false}
               axisLine={false}
-              tick={{ fill: "#b3cfe5", fontSize: 12 }}
             />
             <YAxis
+              allowDecimals={false}
+              tick={{ fill: "#9CA3AF", fontSize: 12 }}
               tickLine={false}
               axisLine={false}
-              allowDecimals={false}
-              tick={{ fill: "#b3cfe5", fontSize: 12 }}
             />
-            <Tooltip
-              content={<CustomTooltip />}
-              cursor={{ fill: "rgba(255,255,255,0.04)" }}
-            />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: "#f9fafb" }} />
             <Legend
-              formatter={(value) =>
-                value === "private" ? (
-                  <span className="text-xs text-bluez-tone-2">ภาคเอกชน</span>
-                ) : (
-                  <span className="text-xs text-bluez-tone-2">ภาครัฐ</span>
-                )
-              }
+              formatter={(value) => {
+                const cfg = SECTOR_CONFIG.find((s) => s.key === value);
+                return (
+                  <span className="text-xs text-gray-500">
+                    {cfg?.label ?? value}
+                  </span>
+                );
+              }}
             />
             <Bar
               dataKey="private"
-              fill="#008cfa"
-              radius={[6, 6, 0, 0]}
-              maxBarSize={44}
+              stackId="a"
+              fill="#3B82F6"
+              radius={[0, 0, 4, 4]}
             />
             <Bar
               dataKey="government"
-              fill="#f59e0b"
-              radius={[6, 6, 0, 0]}
-              maxBarSize={44}
+              stackId="a"
+              fill="#F59E0B"
+              radius={[0, 0, 0, 0]}
+            />
+            <Bar
+              dataKey="stateEnterprise"
+              stackId="a"
+              fill="#8B5CF6"
+              radius={[0, 0, 0, 0]}
+            />
+            <Bar
+              dataKey="selfEmployed"
+              stackId="a"
+              fill="#10B981"
+              radius={[4, 4, 0, 0]}
             />
           </BarChart>
         </ResponsiveContainer>
-      </div>
-
-      {/* Summary Cards */}
-      <div className="mt-6 grid grid-cols-3 gap-3">
-        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-          <p className="text-xs text-bluez-tone-2/70">สัดส่วนเอกชน</p>
-          <p className="mt-1 text-2xl font-bold text-congress-400">
-            {privatePercent}%
-          </p>
-        </div>
-        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-          <p className="text-xs text-bluez-tone-2/70">สัดส่วนภาครัฐ</p>
-          <p className="mt-1 text-2xl font-bold text-amber-400">
-            {governmentPercent}%
-          </p>
-        </div>
-        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-          <p className="text-xs text-bluez-tone-2/70">แนวโน้มเอกชน</p>
-          <p
-            className={`mt-1 text-xl font-bold ${
-              trendUp ? "text-emerald-400" : "text-rose-400"
-            }`}
-          >
-            {trendUp ? `+${trend}%` : `${trend}%`}
-          </p>
-          <p
-            className={`text-xs ${
-              trendUp ? "text-emerald-400/70" : "text-rose-400/70"
-            }`}
-          >
-            {trendUp ? "เพิ่มขึ้น" : "ลดลง"}
-          </p>
-        </div>
       </div>
     </div>
   );

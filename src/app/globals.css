@@ -45,6 +45,13 @@ html {
   --bluez-tone-3: #4a7fa7;
   --bluez-tone-4: #1a3d63;
   --bluez-tone-5: #f6fafd;
+  --iptm-navy: #212b46;
+  --iptm-gold: #f6ac0d;
+  --iptm-black: #000000;
+  --iptm-dark-gray: #4c4c4c;
+  --iptm-gray: #939495;
+  --iptm-light: #e2e1db;
+  --iptm-white: #ffffff;
 
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -97,6 +104,12 @@ html {
   --color-bluez-tone-3: var(--bluez-tone-3);
   --color-bluez-tone-4: var(--bluez-tone-4);
   --color-bluez-tone-5: var(--bluez-tone-5);
+  --color-iptm-navy: var(--iptm-navy);
+  --color-iptm-gold: var(--iptm-gold);
+  --color-iptm-dark-gray: var(--iptm-dark-gray);
+  --color-iptm-gray: var(--iptm-gray);
+  --color-iptm-light: var(--iptm-light);
+  --color-iptm-white: var(--iptm-white);
 }
 
 @theme inline {

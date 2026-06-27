@@ -8,27 +8,24 @@ export default function ReviewPage() {
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    const init = async () => {
-      const isAuth = await authGuard("admin");
-      if (!isAuth) return;
-      setAuthorized(true);
-    };
-
-    init();
+    authGuard("admin").then((ok) => {
+      if (ok) setAuthorized(true);
+    });
   }, []);
 
   if (!authorized) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-bluez-tone-4">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 rounded-full border-2 border-violet-400/30 border-t-violet-400 animate-spin" />
-          <p className="text-sm text-white/40">กำลังตรวจสอบสิทธิ์...</p>
+      <div className="min-h-screen flex items-center justify-center bg-iptm-white">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-9 h-9 rounded-full border-2 border-violet-400/20 border-t-violet-400 animate-spin" />
+          <p className="text-xs text-white/25">กำลังตรวจสอบสิทธิ์...</p>
         </div>
       </div>
     );
   }
+
   return (
-    <div className="relative flex items-center justify-center overflow-hidden py-10 pt-26 min-h-screen bg-bluez-tone-4 px-4 md:px-10">
+    <div className="min-h-screen bg-iptm-white pt-20 pb-12">
       <ReviewMainPage />
     </div>
   );

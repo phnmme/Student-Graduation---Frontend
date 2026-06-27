@@ -14,6 +14,8 @@ const authHeader = () => ({
 });
 
 export type AdminUser = {
+  lastLoginAt: null;
+  isOnline: boolean;
   id: number;
   email: string;
   role: "ADMIN" | "OWNER";

@@ -40,7 +40,7 @@ export default function RootLayout({
     };
 
     fetchUser();
-  }, []); // ✅ ไม่มี dependency เพราะ fetchUser ไม่ได้ใช้ค่าจาก state/props
+  }, []);
 
   const handleLogout = () => {
     logout();

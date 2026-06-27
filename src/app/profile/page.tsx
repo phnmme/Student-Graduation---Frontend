@@ -51,7 +51,7 @@ export default function Page() {
   // Error state
   if (error) {
     return (
-      <div className="relative flex items-center justify-center min-h-screen bg-bluez-tone-4">
+      <div className="relative flex items-center justify-center min-h-screen bg-iptm-white">
         <div className="text-center max-w-md">
           <div className="bg-red-50 border border-red-200 text-red-600 px-6 py-4 rounded-xl">
             <p className="font-semibold mb-2">เกิดข้อผิดพลาด</p>
@@ -59,7 +59,7 @@ export default function Page() {
           </div>
           <button
             onClick={() => router.push("/login")}
-            className="mt-4 px-4 py-2 bg-bluez-tone-3 text-white rounded-lg hover:bg-bluez-tone-2 transition"
+            className="mt-4 px-4 py-2 bg-iptm-blue text-white rounded-lg hover:bg-iptm-blue-dark transition"
           >
             กลับไปหน้าเข้าสู่ระบบ
           </button>
@@ -70,7 +70,7 @@ export default function Page() {
 
   // Main content
   return (
-    <div className="relative flex items-center justify-center min-h-screen bg-bluez-tone-4">
+    <div className="relative flex items-center justify-center min-h-screen bg-iptm-white">
       {user && <MainProfile user={user} />}
     </div>
   );

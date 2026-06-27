@@ -27,7 +27,6 @@ export default function NavbarActions({ user, onLogout }: Props) {
   useEffect(() => {
     console.log("User in NavbarActions:", user);
   }, [user]);
-  // ปิด dropdown เมื่อคลิกข้างนอก
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (
@@ -46,14 +45,14 @@ export default function NavbarActions({ user, onLogout }: Props) {
       <div className="flex gap-3">
         <Link
           href="/login"
-          className="flex items-center gap-2 px-4 py-2 border hover:bg-bluez-tone-2 hover:text-bluez-tone-1 transition duration-300 rounded-md border-congress-50 text-congress-50"
+          className="flex items-center gap-2 px-4 py-2 border border-iptm-gold text-iptm-white hover:bg-iptm-white hover:text-iptm-dark-gray transition duration-300 rounded-md "
         >
           <LogIn className="w-4 h-4" />
           เข้าสู่ระบบ
         </Link>
         <Link
           href="/register"
-          className="flex items-center gap-2 px-4 py-2 bg-bluez-tone-4 hover:bg-bluez-tone-5 hover:text-bluez-tone-1 duration-300 transition text-white rounded-md"
+          className="flex items-center gap-2 px-4 py-2 bg-iptm-gold hover:bg-iptm-gold hover:text-iptm-navy duration-300 transition text-iptm-white rounded-md"
         >
           <UserPlus className="w-4 h-4" />
           สมัครสมาชิก
@@ -74,10 +73,10 @@ export default function NavbarActions({ user, onLogout }: Props) {
             className="flex items-center gap-2 px-3 py-2 rounded-lg transition hover:bg-congress-600 group"
           >
             <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-white text-sm font-semibold shadow-sm">
-              {user.name?.charAt(0).toUpperCase()}
+              {user.profile?.firstNameTh?.charAt(0).toUpperCase()}
             </div>
             <span className="text-sm font-medium text-bluez-tone-5 group-hover:text-bluez-tone-6">
-              {user.name}
+              {user.profile?.firstNameTh}
             </span>
             {/* Badge admin */}
             <span className="text-xs bg-amber-100 text-amber-600 font-semibold px-1.5 py-0.5 rounded-full">
@@ -100,7 +99,7 @@ export default function NavbarActions({ user, onLogout }: Props) {
                 className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition"
               >
                 <div className="w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center text-white text-xs font-semibold">
-                  {user.name?.charAt(0).toUpperCase()}
+                  {user.profile?.firstNameTh?.charAt(0).toUpperCase()}
                 </div>
                 โปรไฟล์ของฉัน
               </Link>
@@ -126,24 +125,23 @@ export default function NavbarActions({ user, onLogout }: Props) {
           )}
         </div>
       ) : (
-        // ปกติสำหรับ user ทั่วไป
         <Link
           href="/profile"
           className="flex items-center gap-2 px-3 py-2 rounded-lg transition hover:bg-congress-600 group"
         >
           <div className="w-8 h-8 rounded-full bg-bluez-tone-4 flex items-center justify-center text-white text-sm font-semibold shadow-sm">
-            {user.name?.charAt(0).toUpperCase()}
+            {user.profile?.firstNameTh?.charAt(0).toUpperCase()}
           </div>
           <span className="text-sm font-medium text-bluez-tone-5 group-hover:text-bluez-tone-6">
-            {user.name}
+            {user.profile?.firstNameTh}
           </span>
         </Link>
       )}
 
       <button
         onClick={onLogout}
-        className="flex items-center gap-1 px-3 py-2 rounded-lg text-sm border border-red-200 
-        text-red-500 hover:bg-red-50 hover:border-red-300 transition"
+        className="flex items-center gap-1 px-3 py-2 rounded-lg text-sm bg-red-500  
+        text-iptm-white   hover:bg-red-600 cursor-pointer transition"
       >
         <LogOut className="w-4 h-4" />
         Logout

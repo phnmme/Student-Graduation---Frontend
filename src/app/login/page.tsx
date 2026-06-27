@@ -13,7 +13,6 @@ export default function LoginPage() {
     const token = localStorage.getItem("token");
 
     if (token) {
-      // ถ้ามี token แล้ว redirect ไปหน้าหลัก
       router.push("/");
     } else {
       setIsChecking(false);
@@ -23,7 +22,7 @@ export default function LoginPage() {
   // แสดง loading ขณะตรวจสอบ
   if (isChecking) {
     return (
-      <div className="relative flex items-center justify-center min-h-screen bg-bluez-tone-4">
+      <div className="relative flex items-center justify-center min-h-screen bg-iptm-white">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-bluez-tone-5 mb-4"></div>
           <p className="text-bluez-tone-5">กำลังตรวจสอบ...</p>
@@ -33,7 +32,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative flex items-center justify-center overflow-hidden min-h-screen bg-bluez-tone-4 px-4 md:px-10">
+    <div className="relative flex items-center justify-center overflow-hidden min-h-screen bg-iptm-white px-4 md:px-10">
       <Login />
     </div>
   );

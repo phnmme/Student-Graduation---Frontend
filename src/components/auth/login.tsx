@@ -3,8 +3,8 @@
 
 import { Eye, EyeOff, Lock, LogIn, Mail } from "lucide-react";
 import { useState } from "react";
-import Particles from "../bits/Particles";
 import { login } from "@/action/authAction";
+import Image from "next/image";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,7 +13,9 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = async () => {
+  const handleLogin = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault(); // ป้องกันการ reload หน้าจอเมื่อส่งฟอร์ม
+
     if (!email || !password) {
       setError("กรุณากรอกอีเมลและรหัสผ่าน");
       return;
@@ -36,127 +38,111 @@ export default function Login() {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !isLoading) {
-      handleLogin();
-    }
-  };
-
   return (
-    <>
-      <div className="absolute inset-0 z-0">
-        <Particles
-          particleColors={["#ffffff", "#ffffff"]}
-          particleCount={200}
-          particleSpread={10}
-          speed={0.1}
-          particleBaseSize={100}
-          moveParticlesOnHover={false}
-          alphaParticles={false}
-          disableRotation={false}
-        />
-      </div>
+    <div className="flex flex-col justify-center items-center py-8 w-full max-w-md md:max-w-xl lg:max-w-2xl bg-iptm-white rounded-2xl shadow-xl border border-iptm-light/50">
+      <Image
+        src="/assets/images/iptmlogoalone.png"
+        alt="IPTM Logo"
+        width={150}
+        height={150}
+        className="mx-auto mb-4"
+      />
+      <h1 className="text-3xl font-bold text-iptm-black">เข้าสู่ระบบ</h1>
 
-      <div className="flex flex-col justify-center items-center bg-bluez-tone-1/30 py-8 md:min-w-xl lg:min-w-2xl rounded-2xl drop-shadow-xl ">
-        <h1 className="text-3xl font-semibold text-bluez-tone-5 ">
-          เข้าสู่ระบบ
-        </h1>
-        <div className="p-8 space-y-6 w-full">
-          {/* เพิ่ม: แสดง error message */}
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm">
-              {error}
+      <form onSubmit={handleLogin} className="p-8 space-y-6 w-full">
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm font-medium">
+            {error}
+          </div>
+        )}
+
+        {/* อีเมล */}
+        <div className="space-y-2">
+          <label className="text-sm font-semibold text-iptm-dark-gray ml-1">
+            อีเมล
+          </label>
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-iptm-gray group-focus-within:text-iptm-navy transition-colors">
+              <Mail size={20} />
             </div>
-          )}
+            <input
+              type="email"
+              className="block w-full pl-12 pr-4 py-3 bg-iptm-white border border-iptm-light text-iptm-black placeholder:text-iptm-gray rounded-xl transition-all outline-none focus:border-iptm-navy focus:ring-1 focus:ring-iptm-navy"
+              placeholder="example@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
+        </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-bluez-tone-5 ml-1">
-              อีเมล
+        {/* รหัสผ่าน */}
+        <div className="space-y-2">
+          <div className="flex justify-between items-center px-1">
+            <label className="text-sm font-semibold text-iptm-dark-gray">
+              รหัสผ่าน
             </label>
-            <div className="relative group">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none transition-colors group-focus-within:text-bluez-tone-1 text-bluez-tone-1">
-                <Mail size={20} />
-              </div>
-              <input
-                type="email"
-                className="block w-full pl-12 pr-4 py-3 bg-bluez-tone-3/50 border border-bluez-tone-1 focus:border-bluez-tone-1 focus:bg-white text-[#001f3f] placeholder:text-gray-400 rounded-xl transition-all outline-none"
-                placeholder="example@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onKeyDown={handleKeyPress}
-                disabled={isLoading}
-              />
-            </div>
+            {/* <a
+              href="#"
+              className="text-xs font-medium text-iptm-gray hover:text-iptm-navy hover:underline transition-colors"
+            >
+              ลืมรหัสผ่าน?
+            </a> */}
           </div>
-
-          <div className="space-y-2">
-            <div className="flex justify-between items-center px-1">
-              <label className="text-sm font-semibold text-bluez-tone-5">
-                รหัสผ่าน
-              </label>
-              <a
-                href="#"
-                className="text-xs font-medium text-bluez-tone-5 hover:underline"
-              >
-                ลืมรหัสผ่าน?
-              </a>
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-iptm-gray group-focus-within:text-iptm-navy transition-colors">
+              <Lock size={20} />
             </div>
-            <div className="relative group">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none transition-colors group-focus-within:text-bluez-tone-1 text-bluez-tone-1">
-                <Lock size={20} />
-              </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                className="block w-full pl-12 pr-12 py-3 border border-bluez-tone-1 bg-bluez-tone-3/50 focus:border-bluez-tone-1 focus:bg-white text-[#001f3f] placeholder:text-gray-400 rounded-xl transition-all outline-none"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyDown={handleKeyPress}
-                disabled={isLoading}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 flex items-center pr-4 text-bluez-tone-1 hover:text-[#0075d3] transition-colors"
-                disabled={isLoading}
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-
-            <div className="flex justify-center mt-4 group">
-              <button
-                onClick={handleLogin}
-                disabled={isLoading}
-                className="w-full block bg-congress-300 text-congress-50 p-4 rounded-xl hover:bg-congress-400 transition duration-300 cursor-pointer font-semibold shadow-md disabled:opacity-50 disabled:cursor-not-allowed" // เพิ่ม disabled styles
-              >
-                <p>
-                  <LogIn
-                    className="inline mr-3 group-hover:mr-4 transition-all duration-300"
-                    size={20}
-                  />
-                  {isLoading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}{" "}
-                </p>
-              </button>
-            </div>
+            <input
+              type={showPassword ? "text" : "password"}
+              className="block w-full pl-12 pr-12 py-3 bg-iptm-white border border-iptm-light text-iptm-black placeholder:text-iptm-gray rounded-xl transition-all outline-none focus:border-iptm-navy focus:ring-1 focus:ring-iptm-navy"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-0 flex items-center cursor-pointer pr-4 text-iptm-gray hover:text-iptm-navy transition-colors"
+              disabled={isLoading}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </div>
         </div>
 
-        <div className="relative group">
-          <hr className="border-bluez-tone-3 px-40 lg:px-62" />
-        </div>
-
-        <div className="mt-6 flex justify-center items-center space-x-2">
-          <p className="text-sm text-bluez-tone-5">ยังไม่มีบัญชีใช่ไหม?</p>
-
-          <a
-            href="/register"
-            className="text-sm font-semibold text-congress-300 hover:underline"
+        {/* ปุ่มเข้าสู่ระบบ */}
+        <div className="pt-2">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full flex justify-center items-center gap-3 bg-iptm-gold text-iptm-white p-4 rounded-xl font-semibold cursor-pointer shadow-md hover:bg-iptm-gold/90 active:scale-[0.99] transition-all disabled:opacity-50 disabled:pointer-events-none group"
           >
-            สมัครสมาชิก
-          </a>
+            <LogIn
+              className="transform group-hover:translate-x-1 transition-transform duration-300"
+              size={20}
+            />
+            <span>{isLoading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}</span>
+          </button>
         </div>
+      </form>
+
+      {/* เส้นคั่น */}
+      <div className="w-full px-8">
+        <hr className="border-iptm-light w-full" />
       </div>
-    </>
+
+      {/* สมัครสมาชิก */}
+      <div className="mt-6 mb-2 flex justify-center items-center space-x-2">
+        <p className="text-sm text-iptm-dark-gray">ยังไม่มีบัญชีใช่ไหม?</p>
+        <a
+          href="/register"
+          className="text-sm font-bold text-iptm-gold hover:underline hover:text-iptm-gold/90 transition-colors"
+        >
+          สมัครสมาชิก
+        </a>
+      </div>
+    </div>
   );
 }

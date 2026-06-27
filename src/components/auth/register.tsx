@@ -13,9 +13,10 @@ import {
   EyeOff,
 } from "lucide-react";
 import { SetStateAction, useState } from "react";
-import { useRouter } from "next/navigation"; // เพิ่ม
+import { useRouter } from "next/navigation";
 import Particles from "../bits/Particles";
 import { register } from "@/action/authAction";
+import Image from "next/image";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,8 +31,8 @@ export default function Register() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [entryYear, setEntryYear] = useState("");
 
-  const [isLoading, setIsLoading] = useState(false); // เพิ่ม
-  const [error, setError] = useState(""); // เพิ่ม
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const router = useRouter();
 
@@ -59,7 +60,6 @@ export default function Register() {
     }
 
     if (password.length < 6) {
-      // เพิ่ม validation ความยาวรหัสผ่าน
       setError("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร");
       return;
     }
@@ -97,65 +97,54 @@ export default function Register() {
 
   return (
     <>
-      <div className="absolute inset-0 z-0">
-        <Particles
-          particleColors={["#ffffff", "#ffffff"]}
-          particleCount={200}
-          particleSpread={10}
-          speed={0.1}
-          particleBaseSize={100}
-          moveParticlesOnHover={false}
-          alphaParticles={false}
-          disableRotation={false}
+      <div className="relative z-10 flex flex-col justify-center items-center bg-iptm-white py-8 w-full max-w-md md:max-w-xl lg:max-w-3xl rounded-2xl shadow-xl border border-iptm-light/50 mx-auto">
+        <Image
+          src="/assets/images/iptmlogoalone.png"
+          alt="IPTM Logo"
+          width={150}
+          height={150}
+          className="mx-auto mb-4"
         />
-      </div>
+        <h1 className="text-3xl font-bold text-iptm-black mb-2">ลงทะเบียน</h1>
 
-      {/* Card */}
-      <div className="relative z-10 flex flex-col justify-center items-center bg-bluez-tone-1/30 py-8 md:min-w-xl lg:min-w-3xl rounded-2xl drop-shadow-xl mx-auto">
-        <h1 className="text-3xl font-semibold text-bluez-tone-5 mb-2">
-          ลงทะเบียน
-        </h1>
-        <p className="text-bluez-tone-5/70 text-sm mb-6">
-          กรุณากรอกข้อมูลเพื่อสร้างบัญชีและอัปเดตฐานข้อมูลนักศึกษา
-        </p>
-
-        <form className="p-8 space-y-10 w-full" onSubmit={handleSubmit}>
-          {/* เพิ่ม: Error Message */}
+        <form className="p-8 space-y-8 w-full" onSubmit={handleSubmit}>
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm">
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm font-medium">
               {error}
             </div>
           )}
 
-          {/* เพิ่ม: Success Message */}
           {success && (
-            <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-xl text-sm">
+            <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-xl text-sm font-medium">
               {success}
             </div>
           )}
 
+          {/* SECTION 1: ข้อมูลบัญชีผู้ใช้ */}
           <section className="space-y-4">
-            <h2 className="font-bold text-bluez-tone-5 flex items-center gap-2">
+            <h2 className="font-bold text-iptm-navy flex items-center gap-2 border-b border-iptm-light pb-2">
               <Lock size={18} />
               ข้อมูลบัญชีผู้ใช้
             </h2>
 
             {/* Email */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-bluez-tone-5 ml-1">
+              <label className="text-sm font-semibold text-iptm-dark-gray ml-1">
                 อีเมล (มหาวิทยาลัยเท่านั้น){" "}
                 <span className="text-red-500">*</span>
               </label>
               <div className="relative group">
-                <Mail className="absolute left-4 top-3.5 text-bluez-tone-1" />
+                <div className="absolute left-4 top-3.5 text-iptm-gray group-focus-within:text-iptm-navy transition-colors">
+                  <Mail size={20} />
+                </div>
                 <input
                   type="email"
                   required
-                  className="w-full pl-12 pr-4 py-3 bg-bluez-tone-3/50 border border-bluez-tone-1 focus:bg-white rounded-xl outline-none"
-                  placeholder="example@xyz.xyz"
+                  className="w-full pl-12 pr-4 py-3 bg-iptm-white border border-iptm-light text-iptm-black placeholder:text-iptm-gray rounded-xl transition-all outline-none focus:border-iptm-navy focus:ring-1 focus:ring-iptm-navy disabled:opacity-50"
+                  placeholder="example@university.ac.th"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  disabled={isLoading} // เพิ่ม
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -163,61 +152,74 @@ export default function Register() {
             {/* Password */}
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-bluez-tone-5 ml-1">
+                <label className="text-sm font-semibold text-iptm-dark-gray ml-1">
                   รหัสผ่าน <span className="text-red-500">*</span>
                 </label>
-                <div className="relative">
-                  <Lock className="absolute left-4 top-3.5 text-bluez-tone-1" />
+                <div className="relative group">
+                  <div className="absolute left-4 top-3.5 text-iptm-gray group-focus-within:text-iptm-navy transition-colors">
+                    <Lock size={20} />
+                  </div>
                   <input
                     type={showPassword ? "text" : "password"}
                     required
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-12 pr-12 py-3 bg-bluez-tone-3/50 border border-bluez-tone-1 rounded-xl outline-none"
-                    disabled={isLoading} // เพิ่ม
+                    className="w-full pl-12 pr-12 py-3 bg-iptm-white border border-iptm-light text-iptm-black placeholder:text-iptm-gray rounded-xl transition-all outline-none focus:border-iptm-navy focus:ring-1 focus:ring-iptm-navy disabled:opacity-50"
+                    disabled={isLoading}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-3.5 text-bluez-tone-1 cursor-pointer"
-                    disabled={isLoading} // เพิ่ม
+                    className="absolute right-4 top-3.5 text-iptm-gray hover:text-iptm-navy transition-colors cursor-pointer"
+                    disabled={isLoading}
                   >
-                    {showPassword ? <EyeOff /> : <Eye />}
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-bluez-tone-5 ml-1">
+                <label className="text-sm font-semibold text-iptm-dark-gray ml-1">
                   ยืนยันรหัสผ่าน <span className="text-red-500">*</span>
                 </label>
-                <div className="relative">
-                  <Lock className="absolute left-4 top-3.5 text-bluez-tone-1" />
+                <div className="relative group">
+                  <div className="absolute left-4 top-3.5 z-50 text-iptm-gray group-focus-within:text-iptm-navy transition-colors">
+                    <Lock size={20} />
+                  </div>
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     required
                     placeholder="••••••••"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full pl-12 pr-12 py-3 bg-bluez-tone-3/50 border border-bluez-tone-1 rounded-xl outline-none"
-                    disabled={isLoading} // เพิ่ม
+                    className="w-full pl-12 pr-12 py-3 bg-iptm-white border border-iptm-light text-iptm-black placeholder:text-iptm-gray rounded-xl transition-all outline-none focus:border-iptm-navy focus:ring-1 focus:ring-iptm-navy disabled:opacity-50"
+                    disabled={isLoading}
+                    style={{ contentVisibility: "auto" }}
+                    onChangeCapture={(e: any) =>
+                      setConfirmPassword(e.target.value)
+                    }
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-3.5 text-bluez-tone-1 cursor-pointer"
-                    disabled={isLoading} // เพิ่ม
+                    className="absolute right-4 top-3.5 text-iptm-gray hover:text-iptm-navy transition-colors cursor-pointer"
+                    disabled={isLoading}
                   >
-                    {showConfirmPassword ? <EyeOff /> : <Eye />}
+                    {showConfirmPassword ? (
+                      <EyeOff size={20} />
+                    ) : (
+                      <Eye size={20} />
+                    )}
                   </button>
                 </div>
               </div>
             </div>
           </section>
 
+          {/* SECTION 2: ข้อมูลส่วนตัว */}
           <section className="space-y-4">
-            <h2 className="font-bold text-bluez-tone-5 flex items-center gap-2">
+            <h2 className="font-bold text-iptm-navy flex items-center gap-2 border-b border-iptm-light pb-2">
               <User size={18} />
               ข้อมูลส่วนตัว
             </h2>
@@ -225,90 +227,101 @@ export default function Register() {
             <div className="grid md:grid-cols-2 gap-4">
               <Input
                 label="รหัสนักศึกษา"
-                icon={<IdCard />}
+                icon={<IdCard size={20} />}
                 placeholder="รหัสนักศึกษา"
                 value={studentCode}
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setStudentCode(e.target.value)
-                }
+                onChange={(e) => setStudentCode(e.target.value)}
                 required
-                disabled={isLoading} // เพิ่ม
+                disabled={isLoading}
               />
               <Input
                 label="ชื่อ (ไทย)"
+                icon={<User size={20} />}
                 placeholder="ชื่อ (ไทย)"
                 value={firstNameTh}
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setFirstNameTh(e.target.value)
-                }
+                onChange={(e) => setFirstNameTh(e.target.value)}
                 required
-                disabled={isLoading} // เพิ่ม
+                disabled={isLoading}
               />
               <Input
                 label="นามสกุล (ไทย)"
+                icon={<User size={20} />}
                 placeholder="นามสกุล (ไทย)"
                 value={lastNameTh}
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setLastNameTh(e.target.value)
-                }
+                onChange={(e) => setLastNameTh(e.target.value)}
                 required
-                disabled={isLoading} // เพิ่ม
+                disabled={isLoading}
               />
               <Input
                 label="เบอร์โทรศัพท์"
                 type="tel"
-                icon={<Phone />}
+                icon={<Phone size={20} />}
                 placeholder="เบอร์โทรศัพท์"
                 value={phoneNumber}
-                onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                  setPhoneNumber(e.target.value)
-                }
+                onChange={(e) => setPhoneNumber(e.target.value)}
                 required
-                disabled={isLoading} // เพิ่ม
+                disabled={isLoading}
               />
             </div>
           </section>
 
+          {/* SECTION 3: ข้อมูลการศึกษา */}
           <section className="space-y-4">
-            <h2 className="font-bold text-bluez-tone-5 flex items-center gap-2">
+            <h2 className="font-bold text-iptm-navy flex items-center gap-2 border-b border-iptm-light pb-2">
               <GraduationCap size={18} />
               ข้อมูลการศึกษา
             </h2>
 
-            <input
-              readOnly
-              value="การจัดการเทคโนโลยีสารการผลิตและสารสนเทศ"
-              className="w-full px-4 py-3 bg-bluez-tone-3/30 rounded-xl"
-              placeholder="สาขาวิชา"
-            />
+            <div className="relative group">
+              <div className="absolute left-4 top-3.5 text-iptm-gray">
+                <GraduationCap size={20} />
+              </div>
+              <input
+                readOnly
+                value="การจัดการเทคโนโลยีสารการผลิตและสารสนเทศ"
+                className="w-full pl-12 pr-4 py-3 bg-iptm-light/40 border border-iptm-light text-iptm-dark-gray rounded-xl cursor-not-allowed outline-none font-medium"
+              />
+            </div>
+
             <input
               type="number"
               required
               value={entryYear}
               onChange={(e) => setEntryYear(e.target.value)}
-              className="w-full px-4 py-3 bg-bluez-tone-3/50 border border-bluez-tone-1 rounded-xl outline-none"
+              className="w-full px-4 py-3 bg-iptm-white border border-iptm-light text-iptm-black placeholder:text-iptm-gray rounded-xl transition-all outline-none focus:border-iptm-navy focus:ring-1 focus:ring-iptm-navy disabled:opacity-50"
               placeholder="ปีที่เข้าศึกษา (เช่น 2567)"
-              disabled={isLoading} // เพิ่ม
-              min="2500" // เพิ่ม validation
-              max="2600" // เพิ่ม validation
+              disabled={isLoading}
+              min="2500"
+              max="2600"
             />
           </section>
 
-          <button
-            type="submit"
-            disabled={isLoading} // เพิ่ม
-            className="w-full bg-congress-300 text-white p-4 rounded-xl hover:bg-congress-400 transition font-semibold flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed" // เพิ่ม disabled styles
-          >
-            <UserPlus />
-            {isLoading ? "กำลังลงทะเบียน..." : "ลงทะเบียนและเริ่มต้นใช้งาน"}
-          </button>
+          {/* ปุ่ม Submit */}
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full flex justify-center items-center gap-3 bg-iptm-gold text-iptm-white p-4 rounded-xl font-semibold shadow-md hover:bg-iptm-gold/90 cursor-pointer active:scale-[0.99] transition-all disabled:opacity-50 disabled:pointer-events-none group"
+            >
+              <UserPlus className="transform group-hover:scale-110 transition-transform duration-300" />
+              <span>
+                {isLoading ? "กำลังลงทะเบียน..." : "ลงทะเบียนและเริ่มต้นใช้งาน"}
+              </span>
+            </button>
+          </div>
         </form>
 
-        <div className="mt-6 flex gap-2 text-sm">
-          <span className="text-bluez-tone-5">มีบัญชีอยู่แล้ว?</span>
+        {/* เส้นคั่น */}
+        <div className="w-full px-8">
+          <hr className="border-iptm-light w-full" />
+        </div>
+
+        {/* ลิงก์กลับหน้า Login */}
+        <div className="mt-6 mb-2 flex justify-center items-center space-x-2 text-sm">
+          <span className="text-iptm-dark-gray">มีบัญชีอยู่แล้ว?</span>
           <a
             href="/login"
-            className="font-semibold text-congress-300 hover:underline"
+            className="font-bold text-iptm-gold hover:underline hover:text-iptm-gold/90 transition-colors"
           >
             เข้าสู่ระบบ
           </a>
@@ -318,6 +331,7 @@ export default function Register() {
   );
 }
 
+// Sub-Component: Input (ที่มีการเกลี่ยสีให้เหมือนกัน)
 function Input({
   label,
   icon,
@@ -325,26 +339,26 @@ function Input({
   placeholder,
   value,
   onChange,
-  required = false, // เพิ่ม
-  disabled = false, // เพิ่ม
+  required = false,
+  disabled = false,
 }: {
   label: string;
   icon?: React.ReactNode;
   type?: string;
   placeholder?: string;
   value?: string;
-  onChange?: (e: { target: { value: SetStateAction<string> } }) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   disabled?: boolean;
 }) {
   return (
     <div className="space-y-2">
-      <label className="text-sm font-semibold text-bluez-tone-5 ml-1">
+      <label className="text-sm font-semibold text-iptm-dark-gray ml-1">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
-      <div className="relative">
+      <div className="relative group">
         {icon && (
-          <div className="absolute left-4 top-3.5 text-bluez-tone-1">
+          <div className="absolute left-4 top-3.5 text-iptm-gray group-focus-within:text-iptm-navy transition-colors">
             {icon}
           </div>
         )}
@@ -353,9 +367,9 @@ function Input({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          required={required} // เพิ่ม
-          disabled={disabled} // เพิ่ม
-          className="w-full pl-12 pr-4 py-3 bg-bluez-tone-3/50 border border-bluez-tone-1 rounded-xl outline-none focus:bg-white disabled:opacity-50 disabled:cursor-not-allowed" // เพิ่ม disabled styles
+          required={required}
+          disabled={disabled}
+          className="w-full pl-12 pr-4 py-3 bg-iptm-white border border-iptm-light text-iptm-black placeholder:text-iptm-gray rounded-xl transition-all outline-none focus:border-iptm-navy focus:ring-1 focus:ring-iptm-navy disabled:opacity-50 disabled:cursor-not-allowed"
         />
       </div>
     </div>

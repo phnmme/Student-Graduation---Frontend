@@ -2,14 +2,15 @@
 "use client";
 
 import {
-  Bar,
   BarChart,
-  CartesianGrid,
+  Bar,
   XAxis,
   YAxis,
+  CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
+  ResponsiveContainer,
+  Cell,
 } from "recharts";
 
 export interface CoopChartItem {
@@ -22,20 +23,41 @@ interface CoopEmploymentChartProps {
   data: CoopChartItem[];
 }
 
+// coopEmployed เป็น subset ของ graduates → stack เป็น "ทั่วไป" + "สหกิจ"
+const prepareData = (data: CoopChartItem[]) =>
+  data.map((item) => ({
+    year: item.year.toString(),
+    สหกิจ: item.coopEmployed,
+    ทั่วไป: item.graduates - item.coopEmployed,
+    _total: item.graduates,
+  }));
+
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
+    const coop = payload.find((p: any) => p.dataKey === "สหกิจ")?.value ?? 0;
+    const general =
+      payload.find((p: any) => p.dataKey === "ทั่วไป")?.value ?? 0;
+    const total = coop + general;
+    const percent = total ? ((coop / total) * 100).toFixed(1) : "0";
+
     return (
-      <div className="rounded-xl border border-white/10 bg-bluez-tone-1/90 px-4 py-3 shadow-xl backdrop-blur-sm">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-bluez-tone-2">
-          ปี {label}
+      <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-lg">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-gray-400">
+          ปีที่จบ {label}
         </p>
-        {payload.map((entry: any) => (
-          <p key={entry.name} className="text-sm" style={{ color: entry.fill }}>
-            {entry.name === "graduates" ? "บัณฑิตทั้งหมด" : "ทำงานต่อจากสหกิจ"}
-            {": "}
-            <span className="font-bold">{entry.value.toLocaleString()}</span>
-          </p>
-        ))}
+        <p className="text-sm text-blue-500">
+          บัณฑิตทั่วไป: <span className="font-bold">{general} คน</span>
+        </p>
+        <p className="text-sm text-emerald-600">
+          ต่อเนื่องจากสหกิจ:{" "}
+          <span className="font-bold">
+            {coop} คน{" "}
+            <span className="font-normal text-gray-400">({percent}%)</span>
+          </span>
+        </p>
+        <p className="mt-1 border-t border-gray-100 pt-1 text-xs text-gray-400">
+          รวมบัณฑิต {total} คน
+        </p>
       </div>
     );
   }
@@ -43,154 +65,91 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export function CoopEmploymentChart({ data }: CoopEmploymentChartProps) {
-  const chartData = data.map((item) => ({
-    ...item,
-    year: item.year.toString(),
-  }));
+  const chartData = prepareData(data);
 
-  const percentagePerYear = data.map((item) => ({
-    year: item.year,
-    percent:
-      item.graduates > 0 ? (item.coopEmployed / item.graduates) * 100 : 0,
-  }));
-
-  const avg =
-    percentagePerYear.length > 0
-      ? (
-          percentagePerYear.reduce((sum, y) => sum + y.percent, 0) /
-          percentagePerYear.length
-        ).toFixed(1)
-      : "0";
-
-  const maxYear =
-    percentagePerYear.length > 0
-      ? percentagePerYear.reduce((prev, current) =>
-          current.percent > prev.percent ? current : prev
-        )
-      : null;
-
-  const trend =
-    percentagePerYear.length >= 2
-      ? (
-          percentagePerYear[percentagePerYear.length - 1].percent -
-          percentagePerYear[0].percent
-        ).toFixed(1)
-      : "0";
-
-  const trendUp = Number(trend) >= 0;
+  const totalGraduates = data.reduce((s, d) => s + d.graduates, 0);
+  const totalCoop = data.reduce((s, d) => s + d.coopEmployed, 0);
+  const coopPercent = totalGraduates
+    ? ((totalCoop / totalGraduates) * 100).toFixed(1)
+    : "0";
 
   return (
-    <div className="w-full rounded-2xl border border-white/10 bg-white/10  p-6 shadow-xl backdrop-blur-md">
-      {/* Header */}
+    <div className="w-full rounded-2xl border border-iptm-dark-gray/10 p-6 shadow-md">
       <div className="mb-6">
         <div className="mb-1 flex items-center gap-2">
-          <span className="h-3 w-3 rounded-full bg-congress-400" />
-          <p className="text-xs font-semibold uppercase tracking-widest text-bluez-tone-2">
+          <span className="h-3 w-3 rounded-full bg-blue-500" />
+          <p className="text-xs font-semibold uppercase tracking-widest text-iptm-dark-gray">
             Coop Employment
           </p>
         </div>
-        <h2 className="text-lg font-bold text-white">
+        <h2 className="text-lg font-bold text-iptm-black">
           บัณฑิตที่ทำงานต่อจากสหกิจศึกษา
         </h2>
-        <p className="mt-0.5 text-sm text-bluez-tone-2/70">
-          เปรียบเทียบจำนวนบัณฑิตทั้งหมดกับผู้ที่ได้งานต่อจากสหกิจ
+        <p className="mt-0.5 text-sm text-iptm-dark-gray">
+          สัดส่วนบัณฑิตที่ได้งานต่อเนื่องจากสหกิจเทียบกับบัณฑิตทั่วไป
         </p>
       </div>
 
-      {/* Chart */}
+      <div className="mb-5 flex flex-wrap gap-3">
+        <div className="flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-1.5">
+          <span className="h-2 w-2 rounded-full bg-blue-400" />
+          <span className="text-xs font-medium text-blue-700">
+            บัณฑิตทั่วไป {100 - parseFloat(coopPercent)}% (
+            {totalGraduates - totalCoop} คน)
+          </span>
+        </div>
+        <div className="flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-4 py-1.5">
+          <span className="h-2 w-2 rounded-full bg-emerald-500" />
+          <span className="text-xs font-medium text-emerald-700">
+            ต่อเนื่องจากสหกิจ {coopPercent}% ({totalCoop} คน)
+          </span>
+        </div>
+      </div>
+
       <div className="h-[300px] w-full">
         <ResponsiveContainer>
           <BarChart
             data={chartData}
-            barGap={6}
-            margin={{ top: 5, right: 10, left: -10, bottom: 0 }}
+            margin={{ top: 10, right: 16, left: 0, bottom: 0 }}
+            barSize={36}
           >
             <CartesianGrid
               strokeDasharray="3 3"
               vertical={false}
-              stroke="rgba(255,255,255,0.07)"
+              stroke="#f0f0f0"
             />
             <XAxis
               dataKey="year"
+              tick={{ fill: "#6B7280", fontSize: 12 }}
               tickLine={false}
               axisLine={false}
-              tick={{ fill: "#b3cfe5", fontSize: 12 }}
             />
             <YAxis
+              allowDecimals={false}
+              tick={{ fill: "#9CA3AF", fontSize: 12 }}
               tickLine={false}
               axisLine={false}
-              allowDecimals={false}
-              tick={{ fill: "#b3cfe5", fontSize: 12 }}
             />
-            <Tooltip
-              content={<CustomTooltip />}
-              cursor={{ fill: "rgba(255,255,255,0.04)" }}
-            />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: "#f9fafb" }} />
             <Legend
-              formatter={(value) =>
-                value === "graduates" ? (
-                  <span className="text-xs text-bluez-tone-2">
-                    บัณฑิตทั้งหมด
-                  </span>
-                ) : (
-                  <span className="text-xs text-bluez-tone-2">
-                    ทำงานต่อจากสหกิจ
-                  </span>
-                )
-              }
+              formatter={(value) => (
+                <span className="text-xs text-gray-500">{value}</span>
+              )}
             />
             <Bar
-              dataKey="graduates"
-              fill="#4a7fa7"
-              radius={[6, 6, 0, 0]}
-              maxBarSize={44}
+              dataKey="ทั่วไป"
+              stackId="a"
+              fill="#93C5FD"
+              radius={[0, 0, 4, 4]}
             />
             <Bar
-              dataKey="coopEmployed"
-              fill="#008cfa"
-              radius={[6, 6, 0, 0]}
-              maxBarSize={44}
+              dataKey="สหกิจ"
+              stackId="a"
+              fill="#10B981"
+              radius={[4, 4, 0, 0]}
             />
           </BarChart>
         </ResponsiveContainer>
-      </div>
-
-      {/* Summary Cards */}
-      <div className="mt-6 grid grid-cols-3 gap-3">
-        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-          <p className="text-xs text-bluez-tone-2/70">
-            อัตราเฉลี่ย {data.length} ปี
-          </p>
-          <p className="mt-1 text-2xl font-bold text-white">{avg}%</p>
-        </div>
-        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-          <p className="text-xs text-bluez-tone-2/70">ปีที่สูงสุด</p>
-          <p className="mt-1 text-2xl font-bold text-congress-400">
-            {maxYear ? `${maxYear.year}` : "-"}
-          </p>
-          {maxYear && (
-            <p className="text-xs text-congress-400/80">
-              {maxYear.percent.toFixed(1)}%
-            </p>
-          )}
-        </div>
-        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-          <p className="text-xs text-bluez-tone-2/70">แนวโน้ม</p>
-          <p
-            className={`mt-1 text-xl font-bold ${
-              trendUp ? "text-emerald-400" : "text-rose-400"
-            }`}
-          >
-            {trendUp ? `+${trend}%` : `${trend}%`}
-          </p>
-          <p
-            className={`text-xs ${
-              trendUp ? "text-emerald-400/70" : "text-rose-400/70"
-            }`}
-          >
-            {trendUp ? "เพิ่มขึ้น" : "ลดลง"}
-          </p>
-        </div>
       </div>
     </div>
   );

@@ -8,27 +8,24 @@ export default function UsersPage() {
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    const init = async () => {
-      const isAuth = await authGuard("admin");
-      if (!isAuth) return;
-      setAuthorized(true);
-    };
-
-    init();
+    authGuard("admin").then((isAuth) => {
+      if (isAuth) setAuthorized(true);
+    });
   }, []);
 
   if (!authorized) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-bluez-tone-4">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 rounded-full border-2 border-violet-400/30 border-t-violet-400 animate-spin" />
-          <p className="text-sm text-white/40">กำลังตรวจสอบสิทธิ์...</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 rounded-full border-2 border-white/10 border-t-white/50 animate-spin" />
+          <p className="text-xs text-white/30">กำลังตรวจสอบสิทธิ์...</p>
         </div>
       </div>
     );
   }
+
   return (
-    <div className="relative flex items-center justify-center overflow-hidden py-10 pt-26 min-h-screen bg-bluez-tone-4 px-4 md:px-10">
+    <div className="relative flex items-center justify-center overflow-hidden py-10 pt-26 min-h-screen bg-iptm-white px-4 md:px-10">
       <UserMainPage />
     </div>
   );

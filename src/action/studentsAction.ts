@@ -1,52 +1,64 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import axios from "axios";
+import api from "@/lib/axios";
+import type {
+  ApiResponse,
+  GetAllYearData,
+  GetAllGroupedData,
+  GetStudentByYearData,
+  StudentGroup,
+} from "@/types/studentsList";
 
-// axios instance
-const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-// =======================
-// Get all years
-// =======================
-async function getAllYear() {
+export async function getAllYear(): Promise<ApiResponse<GetAllYearData>> {
   try {
-    const res = await api.get("/api/v1/students/guest/getallyear");
-    return res.data;
-  } catch (error: any) {
-    console.error(
-      "Error fetching years:",
-      error.response?.data || error.message
+    const { data } = await api.get<ApiResponse<GetAllYearData>>(
+      "/api/v1/students/guest/getallyear"
     );
-    return null;
+    return data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message ?? "โหลดข้อมูลปีการศึกษาไม่สำเร็จ"
+    );
   }
 }
 
-// =======================
-// Get students by year
-// =======================
-async function getStudentsByYear(year: string | number, skip: number = 0) {
+export async function getAllStudentsGrouped(): Promise<StudentGroup[]> {
   try {
-    const res = await api.get("/api/v1/students/guest/getstudentbyyear", {
-      params: {
-        year,
-        skip,
-      },
-    });
-
-    return res.data;
-  } catch (error: any) {
-    console.error(
-      "Error fetching students:",
-      error.response?.data || error.message
+    const { data } = await api.get<ApiResponse<GetAllGroupedData>>(
+      "/api/v1/students/guest/getall"
     );
-    return null;
+    return data.data.groups;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message ?? "โหลดข้อมูลนักศึกษาไม่สำเร็จ"
+    );
   }
 }
 
-export { getAllYear, getStudentsByYear };
+export async function getStudentsByYear(
+  year: number,
+  search = "",
+  skip = 0,
+  take = 10
+): Promise<GetStudentByYearData> {
+  try {
+    const { data } = await api.get<ApiResponse<GetStudentByYearData>>(
+      "/api/v1/students/guest/getstudentbyyear",
+      {
+        params: {
+          year,
+          search,
+          skip,
+          take,
+        },
+      }
+    );
+
+    return data.data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message ?? "โหลดข้อมูลนักศึกษาไม่สำเร็จ"
+    );
+  }
+}

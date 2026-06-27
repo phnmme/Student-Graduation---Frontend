@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function NavbarBrand() {
   return (
-    <Link href="/" className="text-xl text-congress-50 font-bold">
+    <Link href="/" className="text-xl text-iptm-white font-bold">
       การจัดการเทคโนโลยีการผลิตและสารสนเทศ
     </Link>
   );

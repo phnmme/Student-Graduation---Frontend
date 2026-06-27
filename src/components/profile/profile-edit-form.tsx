@@ -203,6 +203,8 @@ export function ProfileEditForm({
             options={[
               { label: "เอกชน", value: "PRIVATE" },
               { label: "รัฐบาล", value: "GOVERNMENT" },
+              { label: "รัฐวิสาหกิจ", value: "STATE_ENTERPRISE" },
+              { label: "ผู้ประกอบการ", value: "SELF_EMPLOYED" },
             ]}
             onChange={onChange}
           />
@@ -222,7 +224,7 @@ export function ProfileEditForm({
           type="button"
           onClick={onSave}
           disabled={isLoading}
-          className="inline-flex items-center disabled:opacity-50 disabled:cursor-not-allowed justify-center cursor-pointer gap-2 rounded-lg bg-bluez-tone-4 px-5 py-2.5 text-sm font-medium text-bluez-tone-5 shadow-sm transition hover:bg-bluez-tone-1"
+          className="inline-flex items-center disabled:opacity-50 disabled:cursor-not-allowed justify-center cursor-pointer gap-2 rounded-lg bg-iptm-gold px-5 py-2.5 text-sm font-medium text-bluez-tone-5 shadow-sm transition hover:bg-iptm-gold/90"
         >
           <Save className="h-4 w-4" />
           {isLoading ? "กำลังบันทึก..." : "บันทึก"}

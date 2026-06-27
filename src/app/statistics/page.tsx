@@ -9,6 +9,7 @@ export default function StatisticsPage() {
   const [statistics, setStatistics] = useState<DashboardStatistics | null>(
     null
   );
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -17,15 +18,15 @@ export default function StatisticsPage() {
       try {
         const res = await getStatistics();
 
-        if (!res || !res.data) {
+        if (!res?.data) {
           setError("ไม่สามารถโหลดข้อมูลสถิติได้");
+          console.error("No data received from API");
           return;
         }
 
         setStatistics(res.data);
       } catch (err: any) {
-        console.error("Error fetching statistics:", err);
-        setError(err.message || "เกิดข้อผิดพลาดในการโหลดข้อมูล");
+        setError(err.message || "เกิดข้อผิดพลาด");
       } finally {
         setLoading(false);
       }
@@ -36,23 +37,22 @@ export default function StatisticsPage() {
 
   if (loading) {
     return (
-      <div className="p-4">
-        <h1 className="text-2xl font-bold">กำลังโหลดข้อมูลสถิติ...</h1>
+      <div className="flex min-h-screen items-center justify-center">
+        กำลังโหลดข้อมูล...
       </div>
     );
   }
 
   if (error || !statistics) {
     return (
-      <div className="p-4">
-        <h1 className="text-2xl font-bold">เกิดข้อผิดพลาด</h1>
-        <p className="text-red-500">{error || "ไม่พบข้อมูล"}</p>
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-red-500">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="relative flex items-center justify-center overflow-hidden pt-26 min-h-screen bg-bluez-tone-4 px-10">
+    <div className="bg-iptm-white pt-24 pb-16">
       <StatMain statistics={statistics} />
     </div>
   );

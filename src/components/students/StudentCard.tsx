@@ -1,47 +1,42 @@
 "use client";
 
-import Image from "next/image";
-import { Student } from "../../types/studentsList";
+import { StudentApi } from "@/types/studentsList";
+import { Briefcase, GraduationCap, IdCard } from "lucide-react";
 
 type Props = {
-  student: Student;
+  student: StudentApi;
 };
 
 export default function StudentCard({ student }: Props) {
   return (
-    <div className="group relative rounded-2xl bg-white/90 backdrop-blur shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 p-5">
-      {/* Hover Glow */}
-      <div className="absolute inset-0 rounded-2xl bg-bluez-tone-5/0 group-hover:bg-bluez-tone-5/5 transition duration-300 pointer-events-none" />
+    <div className="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+      <div className="absolute top-0 left-0 h-[3px] w-0 bg-blue-600 transition-all duration-300 group-hover:w-full" />
 
-      <div className="relative flex flex-col items-center text-center">
-        {/* Avatar */}
-        <div className="mb-4">
-          <Image
-            src="https://img5.pic.in.th/file/secure-sv1/kmutnb.png"
-            alt={student.fullName}
-            width={112}
-            height={112}
-            className="w-24 h-24 rounded-full object-cover border-4 border-bluez-tone-5/20 group-hover:scale-105 transition duration-300"
-          />
+      <div className="flex flex-col h-full justify-between gap-4">
+        <div>
+          {/* Name */}
+          <h3 className="font-semibold text-gray-900 text-base line-clamp-1 group-hover:text-blue-600 transition-colors">
+            {student.firstNameTh} {student.lastNameTh}
+          </h3>
+
+          {/* Occupation */}
+          <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
+            <Briefcase size={14} className="text-gray-400 shrink-0" />
+            <span className="font-medium line-clamp-1">
+              {student.jobField || "ไม่ระบุตำแหน่งงาน"}
+            </span>
+          </div>
         </div>
 
-        {/* Name */}
-        <h3 className="text-base font-semibold text-gray-800 line-clamp-2">
-          {student.fullName}
-        </h3>
-
-        {/* Occupation */}
-        <p className="mt-1 text-sm text-bluez-tone-3 font-medium line-clamp-2">
-          {student.currentOccupation}
-        </p>
-
-        {/* Divider */}
-        <div className="w-full h-px bg-gray-100 my-3" />
-
-        {/* Info */}
-        <div className="text-xs text-gray-500 space-y-1">
-          <p>รหัส: {student.studentId}</p>
-          <p>ปีที่จบ: {student.graduationYear}</p>
+        <div className="pt-3 border-t border-gray-50 flex items-center justify-between text-xs text-gray-500">
+          <div className="flex items-center gap-1">
+            <IdCard size={13} className="text-gray-400" />
+            <span>{student.studentCode}</span>
+          </div>
+          <div className="flex items-center gap-1 bg-gray-50 px-2 py-0.5 rounded-md">
+            <GraduationCap size={13} className="text-gray-400" />
+            <span>ปี {student.gradYear ?? "-"}</span>
+          </div>
         </div>
       </div>
     </div>

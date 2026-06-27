@@ -31,7 +31,7 @@ export default function Navbar({ user, loading = false, onLogout }: Props) {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-bluez-tone-3 shadow-md backdrop-blur-md">
+      <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-iptm-navy shadow-md backdrop-blur-md">
         <div className="mx-auto h-full px-6 flex items-center justify-between">
           <NavbarBrand />
           <NavbarLinks user={user} />
