@@ -176,10 +176,10 @@ export default function MobileSidebar({
                             isAdmin ? "bg-amber-500" : "bg-bluez-tone-4"
                           }`}
                         >
-                          {user.profile?.firstNameTh?.charAt(0).toUpperCase()}
+                          {user?.name?.charAt(0).toUpperCase()}
                         </div>
                         <span className="truncate">
-                          {user.profile?.firstNameTh || "ผู้ใช้ไม่ระบุชื่อ"}
+                          {user?.name || "ผู้ใช้ไม่ระบุชื่อ"}
                         </span>
                       </div>
 
@@ -192,7 +192,7 @@ export default function MobileSidebar({
                       )}
                     </div>
                     <p className="text-xs text-congress-50/70 mt-1 truncate pl-9">
-                      {user.email}
+                      {user?.email}
                     </p>
                   </div>
 

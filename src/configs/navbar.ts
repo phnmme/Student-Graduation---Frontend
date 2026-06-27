@@ -52,9 +52,9 @@ export const adminNavLinks = [
     href: "/backend/admin/reviews",
     icon: Eye,
   },
-  {
-    label: "ดูบันทึกกิจกรรม",
-    href: "/backend/admin/logs",
-    icon: Logs,
-  },
+  // {
+  //   label: "ดูบันทึกกิจกรรม",
+  //   href: "/backend/admin/logs",
+  //   icon: Logs,
+  // },
 ];

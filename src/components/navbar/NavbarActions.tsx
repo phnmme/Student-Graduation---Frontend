@@ -61,11 +61,10 @@ export default function NavbarActions({ user, onLogout }: Props) {
     );
   }
 
-  const isAdmin = user.role === "ADMIN" || user.role === "OWNER";
+  const isAdmin = user?.role === "ADMIN" || user?.role === "OWNER";
 
   return (
     <div className="flex items-center gap-3">
-      {/* Profile Link / Admin Dropdown */}
       {isAdmin ? (
         <div className="relative" ref={dropdownRef}>
           <button
@@ -73,10 +72,10 @@ export default function NavbarActions({ user, onLogout }: Props) {
             className="flex items-center gap-2 px-3 py-2 rounded-lg transition hover:bg-congress-600 group"
           >
             <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-white text-sm font-semibold shadow-sm">
-              {user.profile?.firstNameTh?.charAt(0).toUpperCase()}
+              {user?.name?.charAt(0).toUpperCase()}
             </div>
             <span className="text-sm font-medium text-bluez-tone-5 group-hover:text-bluez-tone-6">
-              {user.profile?.firstNameTh}
+              {user?.name}
             </span>
             {/* Badge admin */}
             <span className="text-xs bg-amber-100 text-amber-600 font-semibold px-1.5 py-0.5 rounded-full">
@@ -92,14 +91,13 @@ export default function NavbarActions({ user, onLogout }: Props) {
           {/* Dropdown Menu */}
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-52 bg-white border border-gray-100 rounded-xl shadow-lg py-1 z-50">
-              {/* Profile link อยู่ด้านบนสุด */}
               <Link
                 href="/profile"
                 onClick={() => setDropdownOpen(false)}
                 className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition"
               >
                 <div className="w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center text-white text-xs font-semibold">
-                  {user.profile?.firstNameTh?.charAt(0).toUpperCase()}
+                  {user?.name?.charAt(0).toUpperCase()}
                 </div>
                 โปรไฟล์ของฉัน
               </Link>
@@ -130,10 +128,10 @@ export default function NavbarActions({ user, onLogout }: Props) {
           className="flex items-center gap-2 px-3 py-2 rounded-lg transition hover:bg-congress-600 group"
         >
           <div className="w-8 h-8 rounded-full bg-bluez-tone-4 flex items-center justify-center text-white text-sm font-semibold shadow-sm">
-            {user.profile?.firstNameTh?.charAt(0).toUpperCase()}
+            {user?.name?.charAt(0).toUpperCase()}
           </div>
           <span className="text-sm font-medium text-bluez-tone-5 group-hover:text-bluez-tone-6">
-            {user.profile?.firstNameTh}
+            {user?.name || "ผู้ใช้ไม่ระบุชื่อ"}
           </span>
         </Link>
       )}

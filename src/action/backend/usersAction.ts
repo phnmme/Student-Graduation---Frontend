@@ -15,27 +15,11 @@ const authHeader = () => ({
 
 export type EmploymentSector = "PRIVATE" | "GOVERNMENT" | null;
 
-export type StudentProfile = {
-  id: number;
-  studentCode: string;
-  firstNameTh: string;
-  lastNameTh: string;
-  phoneNumber: string | null;
-  department: string;
-  entryYear: number;
-  gradYear: number | null;
-  jobField: string | null;
-  continued_from_coop: boolean;
-  employment_sector: EmploymentSector;
-};
-
 export type User = {
   id: number;
   email: string;
+  name?: string | null;
   role: "USER" | "ADMIN" | "OWNER";
-  createdAt: string;
-  updatedAt: string;
-  profile: StudentProfile | null;
 };
 
 export type UserDetail = User & {
