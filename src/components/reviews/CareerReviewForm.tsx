@@ -3,8 +3,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Briefcase, FileText, Send } from "lucide-react";
-import Particles from "../bits/Particles";
+import { Briefcase, FileText, Send, GraduationCap, Building2 } from "lucide-react";
 import { createReview } from "@/action/backend/reviewAction";
 import Image from "next/image";
 
@@ -13,6 +12,7 @@ export default function CareerReviewForm() {
 
   const [title, setTitle] = useState("");
   const [jobField, setJobField] = useState("");
+  const [category, setCategory] = useState<"CAREER_PREP" | "CURRICULUM_IMPROVEMENT">("CAREER_PREP");
   const [description, setDescription] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +36,7 @@ export default function CareerReviewForm() {
         title,
         description,
         jobField: jobField || undefined,
+        category,
       });
       if (res) {
         setSuccess("บันทึกรีวิวเรียบร้อยแล้ว");
@@ -65,8 +66,8 @@ export default function CareerReviewForm() {
             เขียนสิ่งที่อยากจะแนะนำ
           </h1>
           <p className="text-iptm-dark-gray text-sm">
-            แนะนำหรือแชร์ประสบการณ์ต่างๆ
-            เพื่อเป็นประโยชน์ในการเตรียมตัวของรุ่นน้อง
+            เลือกประเภทที่ต้องการแบ่งปัน เพื่อเตรียมความพร้อมในการทำงาน
+            หรือช่วยเสนอแนะแนวทางพัฒนาหลักสูตรให้ดียิ่งขึ้น
           </p>
         </div>
 
@@ -83,6 +84,43 @@ export default function CareerReviewForm() {
             </div>
           )}
 
+          {/* Category */}
+          <div className="space-y-3">
+            <label className="text-sm font-semibold text-iptm-dark-gray ml-1">
+              ต้องการแนะนำเรื่องใด? <span className="text-red-500">*</span>
+            </label>
+            <div className="grid md:grid-cols-2 gap-3">
+              <button
+                type="button"
+                disabled={isLoading}
+                onClick={() => setCategory("CAREER_PREP")}
+                aria-pressed={category === "CAREER_PREP"}
+                className={`flex items-start gap-3 p-4 text-left rounded-xl border transition-all ${category === "CAREER_PREP" ? "border-iptm-navy bg-iptm-navy/5 ring-1 ring-iptm-navy/15" : "border-iptm-light hover:border-iptm-navy/40"}`}
+              >
+                <span className="rounded-lg bg-iptm-navy/10 text-iptm-navy p-2"><Building2 size={20} /></span>
+                <span className="flex-1">
+                  <span className="block text-sm font-semibold text-iptm-black">แนะนำการทำงาน</span>
+                  <span className="block text-xs text-iptm-dark-gray mt-1">เตรียมตัวสมัครงาน ทักษะที่จำเป็น และประสบการณ์ทำงาน</span>
+                </span>
+                <span className={`mt-1 w-4 h-4 rounded-full border flex items-center justify-center ${category === "CAREER_PREP" ? "border-iptm-navy" : "border-iptm-gray"}`}>{category === "CAREER_PREP" && <span className="w-2 h-2 rounded-full bg-iptm-navy" />}</span>
+              </button>
+              <button
+                type="button"
+                disabled={isLoading}
+                onClick={() => setCategory("CURRICULUM_IMPROVEMENT")}
+                aria-pressed={category === "CURRICULUM_IMPROVEMENT"}
+                className={`flex items-start gap-3 p-4 text-left rounded-xl border transition-all ${category === "CURRICULUM_IMPROVEMENT" ? "border-iptm-gold bg-iptm-gold/5 ring-1 ring-iptm-gold/20" : "border-iptm-light hover:border-iptm-gold/50"}`}
+              >
+                <span className="rounded-lg bg-iptm-gold/10 text-iptm-gold p-2"><GraduationCap size={20} /></span>
+                <span className="flex-1">
+                  <span className="block text-sm font-semibold text-iptm-black">แนะนำหลักสูตร</span>
+                  <span className="block text-xs text-iptm-dark-gray mt-1">เสนอแนะวิชาเรียน เนื้อหา และทักษะที่ควรเพิ่มเติม</span>
+                </span>
+                <span className={`mt-1 w-4 h-4 rounded-full border flex items-center justify-center ${category === "CURRICULUM_IMPROVEMENT" ? "border-iptm-gold" : "border-iptm-gray"}`}>{category === "CURRICULUM_IMPROVEMENT" && <span className="w-2 h-2 rounded-full bg-iptm-gold" />}</span>
+              </button>
+            </div>
+          </div>
+
           {/* Grid Layout สำหรับหัวข้อและสายงานเพื่อให้กระชับขึ้นบนจอใหญ่ */}
           <div className="grid md:grid-cols-2 gap-6">
             {/* Title */}
@@ -97,7 +135,7 @@ export default function CareerReviewForm() {
                 <input
                   type="text"
                   required
-                  placeholder="เช่น ประสบการณ์ทำงานสาย Backend"
+                  placeholder={category === "CAREER_PREP" ? "เช่น ทักษะที่ควรเตรียมก่อนสมัครงานสาย Backend" : "เช่น วิชาเรียนที่ควรเพิ่มเพื่อให้พร้อมทำงานจริง"}
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   disabled={isLoading}
@@ -135,7 +173,7 @@ export default function CareerReviewForm() {
             <textarea
               rows={8}
               required
-              placeholder="เล่าประสบการณ์การทำงาน, ลักษณะงานที่เจอ, เงินเดือนเริ่มต้น หรือสิ่งที่คุณอยากให้รุ่นน้องเตรียมตัวล่วงหน้าก่อนเรียนจบ..."
+              placeholder={category === "CAREER_PREP" ? "แชร์ประสบการณ์การทำงาน ทักษะที่ตลาดต้องการ วิธีเตรียมตัวสมัครงาน หรือคำแนะนำสำหรับรุ่นน้อง..." : "เสนอแนะวิชาที่ควรเพิ่มหรือปรับปรุง เนื้อหาที่ควรอัปเดต เครื่องมือที่ควรได้ฝึก หรือสิ่งที่อยากให้หลักสูตรเตรียมให้นักศึกษา..."}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               disabled={isLoading}

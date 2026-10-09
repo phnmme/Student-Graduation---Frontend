@@ -8,6 +8,7 @@ import {
   deleteUser,
   resetUserPassword,
 } from "@/action/backend/usersAction";
+import { getMe } from "@/action/authAction";
 import type {
   User,
   UserDetail,
@@ -49,6 +50,24 @@ export default function UserMainPage() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [resetId, setResetId] = useState<number | null>(null);
   const [resetLoading, setResetLoading] = useState(false);
+  const [currentRole, setCurrentRole] = useState<"ADMIN" | "OWNER">("ADMIN");
+
+  useEffect(() => {
+    let active = true;
+    getMe().then((res) => {
+      if (active) setCurrentRole(res?.data?.role === "OWNER" ? "OWNER" : "ADMIN");
+    }).catch(() => {
+      if (active) setCurrentRole("ADMIN");
+    });
+    return () => { active = false; };
+  }, []);
+
+  // Keep temporary credentials only while the selected user's details are open.
+  useEffect(() => {
+    setTempPassMap({});
+    setShowPassMap({});
+    setCopiedId(null);
+  }, [selectedId]);
 
   // ── Toast ────────────────────────────────────────────────────────────────────
   const [toast, setToast] = useState<ToastState | null>(null);
@@ -260,6 +279,7 @@ export default function UserMainPage() {
               deleteLoading={deleteLoading}
               resetId={resetId}
               resetLoading={resetLoading}
+              canManageAdmins={currentRole === "OWNER"}
               onClose={() => setSelectedId(null)}
               onTogglePass={handleTogglePass}
               onCopy={handleCopy}

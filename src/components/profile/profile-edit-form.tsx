@@ -17,10 +17,11 @@ interface FormInputProps {
   label: string;
   name: string;
   value: string;
+  placeholder?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function FormInput({ icon, label, name, value, onChange }: FormInputProps) {
+function FormInput({ icon, label, name, value, placeholder, onChange }: FormInputProps) {
   return (
     <div className="group">
       <label
@@ -33,9 +34,13 @@ function FormInput({ icon, label, name, value, onChange }: FormInputProps) {
       <input
         id={name}
         name={name}
+        type={name === "gradYear" || name === "jobStartYear" ? "number" : "text"}
+        min={name === "gradYear" || name === "jobStartYear" ? 2500 : undefined}
+        max={name === "gradYear" || name === "jobStartYear" ? 2600 : undefined}
         value={value}
+        placeholder={placeholder}
         onChange={onChange}
-        className="w-full rounded-lg border border-bluez-tone-2 bg-white px-4 py-2.5 text-bluez-tone-1 transition focus:border-bluez-tone-3 focus:outline-none focus:ring-2 focus:ring-bluez-tone-3/20"
+        className="w-full rounded-lg border border-bluez-tone-2 bg-white px-4 py-2.5 text-bluez-tone-1 placeholder:text-slate-400 transition focus:border-bluez-tone-3 focus:outline-none focus:ring-2 focus:ring-bluez-tone-3/20"
       />
     </div>
   );
@@ -116,6 +121,8 @@ interface ProfileEditFormProps {
     department: string;
     gradYear: string;
     jobField: string;
+    companyName: string;
+    jobStartYear: string;
     continuedFromCoop: boolean;
     employmentSector: string | null;
   };
@@ -177,6 +184,23 @@ export function ProfileEditForm({
           label="ตำแหน่งงาน"
           name="jobField"
           value={profile.jobField}
+          placeholder="เช่น Software Engineer (เว้นว่างได้หากยังไม่ได้ทำงาน)"
+          onChange={onChange}
+        />
+        <FormInput
+          icon={<Building2 className="h-4 w-4" />}
+          label="บริษัท / องค์กร"
+          name="companyName"
+          value={profile.companyName}
+          placeholder="เช่น บริษัทหรือองค์กรที่ทำงานอยู่"
+          onChange={onChange}
+        />
+        <FormInput
+          icon={<CalendarDays className="h-4 w-4" />}
+          label="ปีที่เริ่มงาน (พ.ศ.)"
+          name="jobStartYear"
+          value={profile.jobStartYear}
+          placeholder="เช่น 2568"
           onChange={onChange}
         />
       </div>

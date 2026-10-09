@@ -3,78 +3,88 @@
 
 import axios from "axios";
 
-// axios instance
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  headers: { "Content-Type": "application/json" },
 });
 
-// helper ดึง token จาก localStorage
 function getToken() {
-  if (typeof window !== "undefined") {
-    return localStorage.getItem("token");
-  }
-  return null;
+  return typeof window !== "undefined" ? localStorage.getItem("token") : null;
 }
 
-// =======================
-// Get Profile (Client-side)
-// =======================
-async function getProfile() {
+function authHeaders() {
   const token = getToken();
-  if (!token) return null;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
+export interface EmploymentHistoryItem {
+  id: number;
+  profileId: number;
+  jobTitle: string;
+  companyName: string | null;
+  startYear: number | null;
+  endYear: number | null;
+  description: string | null;
+  createdAt: string;
+}
+
+export async function getProfile() {
   try {
     const res = await api.get("/api/v1/profile/authorized/getprofile", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: authHeaders(),
     });
-
     return res.data;
   } catch (error: any) {
-    console.error(
-      "Error fetching profile:",
-      error.response?.data || error.message
-    );
+    console.error("Error fetching profile:", error.response?.data || error.message);
     return null;
   }
 }
 
-// =======================
-// Update Profile
-// =======================
-async function updateProfile(profileData: {
+export async function updateProfile(profileData: {
   fullname: string;
   studentCode: string;
   department: string;
   gradYear: number;
   jobField: string;
+  companyName: string | null;
+  jobStartYear: number | null;
+  continuedFromCoop: boolean;
+  employmentSector: string | null;
 }) {
-  const token = getToken();
-  if (!token) return null;
-
   try {
-    const res = await api.put(
-      "/api/v1/profile/authorized/updateprofile",
-      profileData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
+    const res = await api.put("/api/v1/profile/authorized/updateprofile", profileData, {
+      headers: authHeaders(),
+    });
     return res.data;
   } catch (error: any) {
-    console.error(
-      "Error updating profile:",
-      error.response?.data || error.message
-    );
+    console.error("Error updating profile:", error.response?.data || error.message);
     throw new Error(error.response?.data?.message || "Update profile failed");
   }
 }
 
-export { getProfile, updateProfile };
+export async function addEmploymentHistory(data: {
+  jobTitle: string;
+  companyName: string;
+  startYear: number;
+  description?: string;
+}) {
+  try {
+    const res = await api.post("/api/v1/profile/authorized/job-history", data, {
+      headers: authHeaders(),
+    });
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "เพิ่มประวัติงานไม่สำเร็จ");
+  }
+}
+
+export async function deleteEmploymentHistory(id: number) {
+  try {
+    const res = await api.delete(`/api/v1/profile/authorized/job-history/${id}`, {
+      headers: authHeaders(),
+    });
+    return res.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "ลบประวัติงานไม่สำเร็จ");
+  }
+}

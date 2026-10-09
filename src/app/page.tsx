@@ -16,27 +16,34 @@ export default function LandingPage() {
           />
 
           {/* Title */}
-          <h1 className="text-4xl font-bold leading-tight text-iptm-black md:text-[55px]">
+          <h1 className="text-4xl font-bold leading-tight text-iptm-black md:text-5xl">
             ยินดีต้อนรับสู่
           </h1>
 
-          <h2 className="mt-4 text-2xl font-semibold text-iptm-dark-gray md:text-4xl">
-            เว็บไซต์การจัดการเทคโนโลยีการผลิตและสารสนเทศ
+          <h2 className="mt-4 text-2xl font-semibold text-iptm-dark-gray md:text-3xl">
+            
+            ระบบสำหรับค้นหาและตรวจสอบข้อมูลนักศึกษาที่สำเร็จการศึกษา
+        
           </h2>
 
           {/* Description */}
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-iptm-dark-gray md:text-lg">
-            ระบบสำหรับค้นหาและตรวจสอบข้อมูลนักศึกษาที่สำเร็จการศึกษา
-            พร้อมแสดงรายละเอียดข้อมูลที่เกี่ยวข้องอย่างสะดวก รวดเร็ว และถูกต้อง
+          ภาควิชาการจัดการเทคโนโลยีการผลิตและสารสนเทศ
           </p>
 
           {/* Button */}
-          <div className="mt-10">
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Link
               href="/students"
               className="inline-flex items-center rounded-xl bg-iptm-gold px-8 py-4 text-lg font-semibold text-iptm-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-iptm-gold/90"
             >
               ค้นหาข้อมูลนักศึกษาที่สำเร็จการศึกษา
+            </Link>
+            <Link
+              href="/reviews/approved"
+              className="inline-flex items-center rounded-xl border border-iptm-navy/20 bg-white px-8 py-4 text-lg font-semibold text-iptm-navy shadow-sm transition-all duration-300 hover:scale-105 hover:border-iptm-navy/40 hover:bg-iptm-light/30"
+            >
+              ดูรีวิวจากศิษย์เก่า
             </Link>
           </div>
         </div>

@@ -32,6 +32,7 @@ interface UserDetailDrawerProps {
   deleteLoading: boolean;
   resetId: number | null;
   resetLoading: boolean;
+  canManageAdmins: boolean;
   onClose: () => void;
   onTogglePass: (id: number) => void;
   onCopy: (id: number) => void;
@@ -51,6 +52,7 @@ export function UserDetailDrawer({
   deleteLoading,
   resetId,
   resetLoading,
+  canManageAdmins,
   onClose,
   onTogglePass,
   onCopy,
@@ -229,38 +231,52 @@ export function UserDetailDrawer({
           <section>
             <SectionLabel>การดำเนินการ</SectionLabel>
             <div className="flex flex-col gap-2">
-              {resetId === detail.id ? (
-                <ConfirmPanel
-                  variant="reset"
-                  email={detail.email}
-                  loading={resetLoading}
-                  onCancel={() => onSetResetId(null)}
-                  onConfirm={() => onReset(detail.id)}
-                />
-              ) : (
-                <button
-                  onClick={() => onSetResetId(detail.id)}
-                  className="flex items-center gap-2.5 text-sm cursor-pointer bg-sky-50 hover:bg-sky-100 text-sky-600 border border-sky-200 px-4 py-3 rounded-xl transition-colors font-medium"
-                >
-                  <KeyRound size={15} /> รีเซ็ตรหัสผ่าน
-                </button>
+              {detail.role !== "OWNER" && (detail.role !== "ADMIN" || canManageAdmins) && (
+                resetId === detail.id ? (
+                  <ConfirmPanel
+                    variant="reset"
+                    email={detail.email}
+                    loading={resetLoading}
+                    onCancel={() => onSetResetId(null)}
+                    onConfirm={() => onReset(detail.id)}
+                  />
+                ) : (
+                  <button
+                    onClick={() => onSetResetId(detail.id)}
+                    className="flex items-center gap-2.5 text-sm cursor-pointer bg-sky-50 hover:bg-sky-100 text-sky-600 border border-sky-200 px-4 py-3 rounded-xl transition-colors font-medium"
+                  >
+                    <KeyRound size={15} /> รีเซ็ตรหัสผ่าน
+                  </button>
+                )
               )}
 
-              {deleteId === detail.id ? (
-                <ConfirmPanel
-                  variant="delete"
-                  email={detail.email}
-                  loading={deleteLoading}
-                  onCancel={() => onSetDeleteId(null)}
-                  onConfirm={() => onDelete(detail.id)}
-                />
-              ) : (
-                <button
-                  onClick={() => onSetDeleteId(detail.id)}
-                  className="flex items-center gap-2.5 text-sm cursor-pointer bg-red-50 hover:bg-red-100 text-red-500 border border-red-200 px-4 py-3 rounded-xl transition-colors font-medium"
-                >
-                  <Trash2 size={15} /> ลบบัญชีผู้ใช้นี้
-                </button>
+              {detail.role !== "OWNER" && (detail.role !== "ADMIN" || canManageAdmins) && (
+                deleteId === detail.id ? (
+                  <ConfirmPanel
+                    variant="delete"
+                    email={detail.email}
+                    loading={deleteLoading}
+                    onCancel={() => onSetDeleteId(null)}
+                    onConfirm={() => onDelete(detail.id)}
+                  />
+                ) : (
+                  <button
+                    onClick={() => onSetDeleteId(detail.id)}
+                    className="flex items-center gap-2.5 text-sm cursor-pointer bg-red-50 hover:bg-red-100 text-red-500 border border-red-200 px-4 py-3 rounded-xl transition-colors font-medium"
+                  >
+                    <Trash2 size={15} /> ลบบัญชีผู้ใช้นี้
+                  </button>
+                )
+              )}
+              {detail.role === "OWNER" && (
+                <p className="text-xs text-gray-400 bg-gray-50 rounded-xl p-3">
+                  บัญชี OWNER ได้รับการป้องกัน ไม่สามารถรีเซ็ตรหัสผ่านหรือลบจากหน้านี้ได้
+                </p>
+              )}
+              {detail.role === "ADMIN" && !canManageAdmins && (
+                <p className="text-xs text-gray-400 bg-gray-50 rounded-xl p-3">
+                  เฉพาะ OWNER เท่านั้นที่สามารถจัดการบัญชี Admin ได้
+                </p>
               )}
             </div>
           </section>

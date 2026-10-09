@@ -10,7 +10,6 @@ import {
   Shield,
   Circle,
   Search,
-  User,
   AlertTriangle,
 } from "lucide-react";
 import {
@@ -18,6 +17,7 @@ import {
   deleteAdmin,
   getAdmins,
 } from "@/action/backend/adminAction";
+import { getMe } from "@/action/authAction";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -263,37 +263,64 @@ export default function AdminPage() {
   const [search, setSearch] = useState("");
   const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
   const [addLoading, setAddLoading] = useState(false);
+  const [deleteLoadingId, setDeleteLoadingId] = useState<number | null>(null);
+  const [currentRole, setCurrentRole] = useState<AdminRole>("ADMIN");
+  const [pageError, setPageError] = useState<string | null>(null);
+  const isOwner = currentRole === "OWNER";
 
   const loadAdmins = useCallback(async () => {
-    const raw = await getAdmins();
-    const normalized: AdminApi[] = raw.map((admin) => ({
-      ...admin,
-      lastLoginAt: admin.lastLoginAt ?? null,
-      isOnline: admin.isOnline ?? false,
-      profile: admin.profile ?? { firstNameTh: "", lastNameTh: "" },
-    }));
-    setAdmins(normalized);
+    try {
+      const raw = await getAdmins();
+      const normalized: AdminApi[] = raw.map((admin) => ({
+        ...admin,
+        lastLoginAt: admin.lastLoginAt ?? null,
+        isOnline: admin.isOnline ?? false,
+        profile: admin.profile ?? { firstNameTh: "", lastNameTh: "" },
+      }));
+      setAdmins(normalized);
+      setPageError(null);
+    } catch (error) {
+      setPageError(error instanceof Error ? error.message : "โหลดรายชื่อผู้ดูแลไม่สำเร็จ");
+    }
   }, []);
 
   useEffect(() => {
+    let active = true;
+    getMe().then((res) => {
+      if (active) setCurrentRole(res?.data?.role === "OWNER" ? "OWNER" : "ADMIN");
+    }).catch(() => {
+      if (active) setCurrentRole("ADMIN");
+    });
     loadAdmins();
+    return () => { active = false; };
   }, [loadAdmins]);
 
   const handleAddAdmin = async (email: string) => {
     setAddLoading(true);
+    setPageError(null);
     try {
       await createAdmin(email);
       setShowModal(false);
       await loadAdmins();
+    } catch (error) {
+      setPageError(error instanceof Error ? error.message : "เพิ่ม Admin ไม่สำเร็จ");
     } finally {
       setAddLoading(false);
     }
   };
 
   const handleDeleteAdmin = async (id: number) => {
-    setAdmins((prev) => prev.filter((a) => a.id !== id));
-    setDeleteConfirmId(null);
-    await deleteAdmin(id);
+    setDeleteLoadingId(id);
+    setPageError(null);
+    try {
+      await deleteAdmin(id);
+      setDeleteConfirmId(null);
+      await loadAdmins();
+    } catch (error) {
+      setPageError(error instanceof Error ? error.message : "ถอดสิทธิ์ Admin ไม่สำเร็จ");
+    } finally {
+      setDeleteLoadingId(null);
+    }
   };
 
   const filteredAdmins = admins.filter(
@@ -328,14 +355,29 @@ export default function AdminPage() {
             </div>
           </div>
 
-          <button
-            onClick={() => setShowModal(true)}
-            className="flex items-center justify-center gap-2 bg-iptm-gold cursor-pointer hover:bg-iptm-gold/90 active:scale-95 text-iptm-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all shadow-md w-full sm:w-auto"
-          >
-            <UserPlus size={15} />
-            เพิ่ม Admin
-          </button>
+          {isOwner && (
+            <button
+              onClick={() => setShowModal(true)}
+              className="flex items-center justify-center gap-2 bg-iptm-gold cursor-pointer hover:bg-iptm-gold/90 active:scale-95 text-iptm-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all shadow-md w-full sm:w-auto"
+            >
+              <UserPlus size={15} />
+              เพิ่ม Admin
+            </button>
+          )}
         </div>
+
+        {pageError && (
+          <div role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 flex items-center justify-between gap-3">
+            <span>{pageError}</span>
+            <button onClick={() => setPageError(null)} aria-label="ปิดข้อความ" className="shrink-0"><X size={16} /></button>
+          </div>
+        )}
+
+        {!isOwner && (
+          <p className="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-xs text-blue-800">
+            คุณมีสิทธิ์ดูรายชื่อผู้ดูแลเท่านั้น การเพิ่มหรือถอดสิทธิ์ทำได้โดย OWNER
+          </p>
+        )}
 
         {/* ── Stats ── */}
         <div className="grid grid-cols-3 gap-3">
@@ -422,23 +464,22 @@ export default function AdminPage() {
                       <StatusBadge isOnline={admin.isOnline} />
                     </td>
                     <td className="px-6 py-3.5 text-right">
-                      {deleteConfirmId === admin.id ? (
+                      {isOwner && admin.role !== "OWNER" && (deleteConfirmId === admin.id ? (
                         <DeleteConfirmInline
                           adminName={admin.profile.firstNameTh}
                           onConfirm={() => handleDeleteAdmin(admin.id)}
                           onCancel={() => setDeleteConfirmId(null)}
                         />
                       ) : (
-                        admin.role !== "OWNER" && (
-                          <button
-                            onClick={() => setDeleteConfirmId(admin.id)}
-                            className="opacity-0 group-hover:opacity-100 text-iptm-gray hover:text-red-500 hover:bg-red-50 p-2 rounded-xl border border-transparent hover:border-red-100 transition-all"
-                            aria-label={`ถอดสิทธิ์ ${fullName}`}
-                          >
-                            <Trash2 size={15} />
-                          </button>
-                        )
-                      )}
+                        <button
+                          onClick={() => setDeleteConfirmId(admin.id)}
+                          disabled={deleteLoadingId === admin.id}
+                          className="opacity-0 group-hover:opacity-100 text-iptm-gray hover:text-red-500 hover:bg-red-50 p-2 rounded-xl border border-transparent hover:border-red-100 disabled:opacity-50 transition-all"
+                          aria-label={`ถอดสิทธิ์ ${fullName}`}
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      ))}
                     </td>
                   </tr>
                 );
@@ -489,14 +530,33 @@ export default function AdminPage() {
 
                   <div className="flex items-center gap-2 shrink-0">
                     <StatusBadge isOnline={admin.isOnline} />
-                    {admin.role !== "OWNER" && (
-                      <button
-                        onClick={() => handleDeleteAdmin(admin.id)}
-                        className="text-iptm-gray hover:text-red-500 p-2 rounded-xl hover:bg-red-50 transition-colors"
-                        aria-label={`ถอดสิทธิ์ ${fullName}`}
-                      >
-                        <Trash2 size={15} />
-                      </button>
+                    {isOwner && admin.role !== "OWNER" && (
+                      deleteConfirmId === admin.id ? (
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => handleDeleteAdmin(admin.id)}
+                            disabled={deleteLoadingId === admin.id}
+                            className="text-xs bg-red-500 text-white px-2 py-1.5 rounded-lg disabled:opacity-50"
+                          >
+                            {deleteLoadingId === admin.id ? "กำลังทำ..." : "ยืนยัน"}
+                          </button>
+                          <button
+                            onClick={() => setDeleteConfirmId(null)}
+                            disabled={deleteLoadingId === admin.id}
+                            className="text-xs bg-iptm-light text-iptm-dark-gray px-2 py-1.5 rounded-lg"
+                          >
+                            ยกเลิก
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => setDeleteConfirmId(admin.id)}
+                          className="text-iptm-gray hover:text-red-500 p-2 rounded-xl hover:bg-red-50 transition-colors"
+                          aria-label={`ถอดสิทธิ์ ${fullName}`}
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      )
                     )}
                   </div>
                 </div>

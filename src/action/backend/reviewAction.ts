@@ -14,12 +14,19 @@ const authHeader = () => ({
 });
 
 export type ReviewStatus = "pending" | "approved" | "rejected";
+export type ReviewCategory = "CAREER_PREP" | "CURRICULUM_IMPROVEMENT";
+
+export const REVIEW_CATEGORY_LABELS: Record<ReviewCategory, string> = {
+  CAREER_PREP: "แนะนำการทำงาน / เตรียมความพร้อมก่อนทำงาน",
+  CURRICULUM_IMPROVEMENT: "แนะนำหลักสูตร / ปรับปรุงวิชาเรียน",
+};
 
 export type CareerReview = {
   id: number;
   title: string;
   description: string;
   jobField: string | null;
+  category: ReviewCategory;
   status: ReviewStatus;
   userId: number;
   user: {
@@ -47,6 +54,7 @@ export type GetReviewsParams = {
   search?: string;
   status?: ReviewStatus | "all";
   jobField?: string;
+  category?: ReviewCategory | "all";
   page?: number;
   limit?: number;
 };
@@ -55,6 +63,7 @@ export type CreateReviewInput = {
   title: string;
   description: string;
   jobField?: string;
+  category: ReviewCategory;
 };
 
 export async function getReviews(
@@ -67,6 +76,8 @@ export async function getReviews(
       query.set("status", params.status);
     if (params.jobField && params.jobField !== "all")
       query.set("jobField", params.jobField);
+    if (params.category && params.category !== "all")
+      query.set("category", params.category);
     if (params.page) query.set("page", String(params.page));
     if (params.limit) query.set("limit", String(params.limit));
 
@@ -147,4 +158,35 @@ export async function deleteReview(id: number) {
     console.error("deleteReview error:", error.response?.data);
     throw new Error(error.response?.data?.message || "ลบ Review ไม่สำเร็จ");
   }
+}
+
+
+export type PublicCareerReview = {
+  id: number;
+  title: string;
+  description: string;
+  jobField: string | null;
+  category: ReviewCategory;
+  createdAt: string;
+  authorName: string;
+};
+
+export async function getApprovedReviews(params: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  category?: ReviewCategory | "all";
+} = {}): Promise<{ data: PublicCareerReview[]; pagination: ReviewPagination }> {
+  const query = new URLSearchParams();
+  query.set("page", String(params.page ?? 1));
+  query.set("limit", String(params.limit ?? 12));
+  if (params.search?.trim()) query.set("search", params.search.trim());
+  if (params.category && params.category !== "all") {
+    query.set("category", params.category);
+  }
+
+  const res = await api.get(
+    `/api/v1/review/guest/approved?${query.toString()}`
+  );
+  return { data: res.data.data, pagination: res.data.pagination };
 }

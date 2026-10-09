@@ -1,6 +1,6 @@
 // src/config/navbar.ts
 
-import { Eye, Logs, ShieldUser, Users } from "lucide-react";
+import { Eye, ShieldUser, Users } from "lucide-react";
 
 export const navLinks = [
   {
@@ -14,6 +14,10 @@ export const navLinks = [
   {
     label: "ข้อมูลสถิติ",
     href: "/statistics",
+  },
+  {
+    label: "รีวิวจากศิษย์เก่า",
+    href: "/reviews/approved",
   },
 ];
 
@@ -31,7 +35,11 @@ export const authNavLinks = [
     href: "/statistics",
   },
   {
-    label: "แนะนำ & รีวิว",
+    label: "รีวิวจากศิษย์เก่า",
+    href: "/reviews/approved",
+  },
+  {
+    label: "เขียนรีวิว",
     href: "/reviews",
   },
 ];

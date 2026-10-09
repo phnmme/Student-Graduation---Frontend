@@ -24,10 +24,12 @@ import {
   getReviews,
   getReviewJobFields,
   updateReviewStatus,
+  REVIEW_CATEGORY_LABELS,
 } from "@/action/backend/reviewAction";
 import type {
   CareerReview,
   ReviewStatus,
+  ReviewCategory,
   GetReviewsParams,
 } from "@/action/backend/reviewAction";
 
@@ -298,6 +300,9 @@ function DetailModal({
           {/* Tags */}
           <div className="flex flex-wrap gap-2">
             <StatusPill status={review.status} size="md" />
+            <span className={`inline-flex items-center gap-1.5 text-xs border px-2.5 py-1 rounded-md font-semibold ${review.category === "CURRICULUM_IMPROVEMENT" ? "bg-amber-50 text-amber-800 border-amber-200" : "bg-blue-50 text-blue-800 border-blue-200"}`}>
+              {REVIEW_CATEGORY_LABELS[review.category] ?? "แนะนำการทำงาน / เตรียมความพร้อมก่อนทำงาน"}
+            </span>
             {review.jobField && (
               <span className="inline-flex items-center gap-1.5 text-xs bg-iptm-navy/5 text-iptm-navy border border-iptm-navy/10 px-2.5 py-1 rounded-md font-semibold">
                 <Briefcase size={11} /> {review.jobField}
@@ -413,6 +418,9 @@ function ReviewCard({
               {review.title}
             </h3>
             <StatusPill status={review.status} size="sm" />
+            <span className={`inline-flex items-center text-[10px] border px-2 py-0.5 rounded-md font-semibold ${review.category === "CURRICULUM_IMPROVEMENT" ? "bg-amber-50 text-amber-800 border-amber-200" : "bg-blue-50 text-blue-800 border-blue-200"}`}>
+              {review.category === "CURRICULUM_IMPROVEMENT" ? "แนะนำหลักสูตร" : "แนะนำการทำงาน"}
+            </span>
           </div>
 
           <p className="text-xs text-iptm-dark-gray line-clamp-1 mb-2">
@@ -576,6 +584,7 @@ export default function ReviewMainPage() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [jobFieldFilter, setJobFieldFilter] = useState("all");
+  const [categoryFilter, setCategoryFilter] = useState<ReviewCategory | "all">("all");
   const [jobFields, setJobFields] = useState<string[]>(["all"]);
 
   const [loading, setLoading] = useState(false);
@@ -603,7 +612,7 @@ export default function ReviewMainPage() {
 
   useEffect(() => {
     setPage(1);
-  }, [statusFilter, jobFieldFilter]);
+  }, [statusFilter, jobFieldFilter, categoryFilter]);
 
   useEffect(() => {
     getReviewJobFields()
@@ -619,6 +628,7 @@ export default function ReviewMainPage() {
         status:
           statusFilter !== "all" ? (statusFilter as ReviewStatus) : undefined,
         jobField: jobFieldFilter !== "all" ? jobFieldFilter : undefined,
+        category: categoryFilter,
         page,
         limit: LIMIT,
       };
@@ -632,7 +642,7 @@ export default function ReviewMainPage() {
     } finally {
       setLoading(false);
     }
-  }, [debouncedSearch, statusFilter, jobFieldFilter, page, showToast]);
+  }, [debouncedSearch, statusFilter, jobFieldFilter, categoryFilter, page, showToast]);
 
   useEffect(() => {
     fetchReviews();
@@ -669,7 +679,7 @@ export default function ReviewMainPage() {
   const detailReview = detailId
     ? reviews.find((r) => r.id === detailId) ?? null
     : null;
-  const hasActiveFilter = search || jobFieldFilter !== "all";
+  const hasActiveFilter = search || jobFieldFilter !== "all" || categoryFilter !== "all";
 
   const statTabs = [
     {
@@ -767,7 +777,22 @@ export default function ReviewMainPage() {
             />
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
+            {/* Review category select */}
+            <div className="relative flex-1 sm:flex-none">
+              <select
+                aria-label="กรองตามประเภทคำแนะนำ"
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value as ReviewCategory | "all")}
+                className="w-full appearance-none bg-iptm-white border border-iptm-light rounded-xl px-3 pr-8 py-3 text-sm text-iptm-black outline-none focus:border-iptm-navy focus:ring-1 focus:ring-iptm-navy shadow-sm transition-all cursor-pointer sm:min-w-[190px]"
+              >
+                <option value="all">ทุกประเภทคำแนะนำ</option>
+                <option value="CAREER_PREP">แนะนำการทำงาน</option>
+                <option value="CURRICULUM_IMPROVEMENT">แนะนำหลักสูตร</option>
+              </select>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-iptm-gray pointer-events-none text-[9px]">▼</span>
+            </div>
+
             {/* Job field select */}
             <div className="relative flex-1 sm:flex-none">
               <SlidersHorizontal
@@ -796,6 +821,7 @@ export default function ReviewMainPage() {
                 onClick={() => {
                   setSearch("");
                   setJobFieldFilter("all");
+                  setCategoryFilter("all");
                 }}
                 className="flex items-center gap-1.5 text-xs text-iptm-dark-gray hover:text-iptm-black border border-iptm-light hover:bg-iptm-light bg-iptm-white px-3 py-2 rounded-xl transition-all shrink-0 shadow-sm"
               >

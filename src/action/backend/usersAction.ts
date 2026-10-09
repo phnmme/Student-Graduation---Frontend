@@ -13,13 +13,37 @@ const authHeader = () => ({
   Authorization: `Bearer ${getToken()}`,
 });
 
-export type EmploymentSector = "PRIVATE" | "GOVERNMENT" | null;
+export type EmploymentSector =
+  | "PRIVATE"
+  | "GOVERNMENT"
+  | "STATE_ENTERPRISE"
+  | "SELF_EMPLOYED"
+  | null;
+
+export type UserProfile = {
+  id?: number;
+  studentCode: string;
+  firstNameTh: string;
+  lastNameTh: string;
+  phoneNumber: string | null;
+  department: string;
+  entryYear: number;
+  gradYear: number | null;
+  jobField: string | null;
+  continued_from_coop: boolean;
+  employment_sector: EmploymentSector;
+  companyName?: string | null;
+  jobStartYear?: number | null;
+};
 
 export type User = {
   id: number;
   email: string;
   name?: string | null;
   role: "USER" | "ADMIN" | "OWNER";
+  createdAt: string;
+  updatedAt: string;
+  profile: UserProfile | null;
 };
 
 export type UserDetail = User & {

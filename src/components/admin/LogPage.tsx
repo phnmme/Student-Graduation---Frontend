@@ -116,8 +116,11 @@ export default function ActivityLogPage() {
   const [allActions, setAllActions] = useState<string[]>(["all"]);
   const [sortDir, setSortDir] = useState<"desc" | "asc">("desc");
 
-  // ── Pagination (client-side) ──────────────────────────────────────────────────
+  // ── Pagination: UI pages of 8, fetched from the server in 100-record chunks ──
   const [page, setPage] = useState(1);
+  const SERVER_CHUNK_SIZE = 96; // หารด้วย PAGE_SIZE ลงตัว เพื่อไม่ให้ข้ามรายการระหว่าง chunk
+  const chunkPage = Math.floor(((page - 1) * PAGE_SIZE) / SERVER_CHUNK_SIZE) + 1;
+  const chunkOffset = ((page - 1) * PAGE_SIZE) % SERVER_CHUNK_SIZE;
   const [expanded, setExpanded] = useState<number | null>(null);
 
   // ── Loading / Toast ───────────────────────────────────────────────────────────
@@ -153,26 +156,26 @@ export default function ActivityLogPage() {
       .catch(() => {});
   }, []);
 
-  // ── Fetch logs (server: search + action filter) ───────────────────────────────
-  // Strategy: fetch 100 records จาก server แล้ว paginate + level-filter ฝั่ง client
+  // ── Fetch logs: server-side search/action filter, page through all records ──
+  // UI แสดง 8 รายการต่อหน้า และดึงจาก server ทีละ 96 รายการเพื่อไม่จำกัดอยู่แค่ชุดแรก
   const fetchLogs = useCallback(async () => {
     setLoading(true);
     try {
       const params: GetLogsParams = {
         search: debouncedSearch || undefined,
         action: actionFilter !== "all" ? actionFilter : undefined,
-        page: 1,
-        limit: 100,
+        page: chunkPage,
+        limit: SERVER_CHUNK_SIZE,
       };
       const res = await getLogs(params);
       setLogs(res.data);
       setTotalLogs(res.pagination.total);
-    } catch (err: any) {
-      showToast(err.message || "ดึง Log ไม่สำเร็จ", "error");
+    } catch (err: unknown) {
+      showToast(err instanceof Error ? err.message : "ดึง Log ไม่สำเร็จ", "error");
     } finally {
       setLoading(false);
     }
-  }, [debouncedSearch, actionFilter]);
+  }, [debouncedSearch, actionFilter, chunkPage]);
 
   useEffect(() => {
     fetchLogs();
@@ -194,8 +197,8 @@ export default function ActivityLogPage() {
     return result;
   }, [logs, levelFilter, sortDir]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const totalPages = Math.max(1, Math.ceil(totalLogs / PAGE_SIZE));
+  const paginated = filtered.slice(chunkOffset, chunkOffset + PAGE_SIZE);
 
   // ── Stats ─────────────────────────────────────────────────────────────────────
   const stats = useMemo(
@@ -325,7 +328,7 @@ export default function ActivityLogPage() {
               />
               <select
                 value={levelFilter}
-                onChange={(e) => setLevelFilter(e.target.value as any)}
+                onChange={(e) => setLevelFilter(e.target.value as LogLevel | "all")}
                 className="appearance-none bg-bluez-tone-3/50 border border-white/10 rounded-xl pl-8 pr-8 py-2.5 text-sm text-white/70 outline-none focus:border-violet-400/50 transition-all cursor-pointer min-w-[130px]"
               >
                 <option value="all" className="bg-slate-900">
