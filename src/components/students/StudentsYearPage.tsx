@@ -172,7 +172,7 @@ export default function StudentsYearPage({ year }: Props) {
             <span>{error}</span>
             <button
               onClick={() => router.refresh()}
-              className="flex items-center gap-1 text-xs font-semibold bg-white border border-red-200 px-3 py-1 rounded-md shadow-sm hover:bg-red-50"
+              className="flex items-center gap-1 text-xs font-semibold bg-white border border-red-200 px-3 py-1 rounded-md shadow-sm hover:bg-red-50 hover:cursor-pointer"
             >
               <RefreshCw size={12} /> รีเฟรชหน้า
             </button>
@@ -286,7 +286,7 @@ export default function StudentsYearPage({ year }: Props) {
                 setKeyword("");
                 setSearch("");
               }}
-              className="mt-2 text-xs text-blue-600 font-semibold hover:underline"
+              className="mt-2 text-xs text-blue-600 font-semibold hover:underline hover:cursor-pointer"
             >
               ล้างค่าคำค้นหา
             </button>

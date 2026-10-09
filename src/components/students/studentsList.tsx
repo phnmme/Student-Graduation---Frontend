@@ -137,7 +137,7 @@ export default function StudentsList({ years }: Props) {
                     setSelectedYear("");
                     setIsOpen(false);
                   }}
-                  className="w-full rounded-lg px-3 py-2 text-left text-slate-400 hover:bg-slate-50 transition-colors"
+                  className="w-full rounded-lg px-3 py-2 text-left text-slate-400 hover:bg-slate-50 transition-colors hover:cursor-pointer"
                 >
                   เลือกปีการศึกษาที่จบ
                 </button>
@@ -170,7 +170,7 @@ export default function StudentsList({ years }: Props) {
             <span>{error}</span>
             <button
               onClick={() => setRetryToken((t) => t + 1)}
-              className="flex items-center gap-1 text-xs font-semibold bg-white border border-red-200 px-3 py-1 rounded-md shadow-sm hover:bg-red-50"
+              className="flex items-center gap-1 text-xs font-semibold bg-white border border-red-200 px-3 py-1 rounded-md shadow-sm hover:bg-red-50 hover:cursor-pointer"
             >
               <RefreshCw size={12} /> โหลดใหม่
             </button>
@@ -274,7 +274,7 @@ export default function StudentsList({ years }: Props) {
             {isSearching && (
               <button
                 onClick={() => setSearch("")}
-                className="mt-2 text-xs text-blue-600 font-semibold hover:underline"
+                className="mt-2 text-xs text-blue-600 font-semibold hover:underline hover:cursor-pointer"
               >
                 ล้างตัวกรองทั้งหมด
               </button>

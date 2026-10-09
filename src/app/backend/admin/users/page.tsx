@@ -30,7 +30,7 @@ export default function UsersPage() {
           <p className="text-sm text-gray-500">
             {authState === "checking" ? "กำลังตรวจสอบสิทธิ์..." : "บัญชีนี้ไม่มีสิทธิ์เข้าหน้าผู้ดูแลระบบ"}
           </p>
-          {authState === "denied" && <Link href="/" className="text-sm underline">กลับหน้าหลัก</Link>}
+          {authState === "denied" && <Link href="/" className="text-sm underline hover:cursor-pointer">กลับหน้าหลัก</Link>}
         </div>
       </div>
     );

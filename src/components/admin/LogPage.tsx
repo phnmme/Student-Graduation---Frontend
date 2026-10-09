@@ -370,7 +370,7 @@ export default function ActivityLogPage() {
             {hasActiveFilter && (
               <button
                 onClick={clearFilters}
-                className="flex items-center gap-1.5 text-sm text-white/40 hover:text-white border border-white/10 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-all shrink-0"
+                className="flex items-center gap-1.5 text-sm text-white/40 hover:text-white border border-white/10 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-all shrink-0 hover:cursor-pointer"
               >
                 <X size={14} /> ล้าง
               </button>

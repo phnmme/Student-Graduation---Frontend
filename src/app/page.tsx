@@ -35,13 +35,13 @@ export default function LandingPage() {
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Link
               href="/students"
-              className="inline-flex items-center rounded-xl bg-iptm-gold px-8 py-4 text-lg font-semibold text-iptm-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-iptm-gold/90"
+              className="inline-flex items-center rounded-xl bg-iptm-gold px-8 py-4 text-lg font-semibold text-iptm-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-iptm-gold/90 hover:cursor-pointer"
             >
               ค้นหาข้อมูลนักศึกษาที่สำเร็จการศึกษา
             </Link>
             <Link
               href="/reviews/approved"
-              className="inline-flex items-center rounded-xl border border-iptm-navy/20 bg-white px-8 py-4 text-lg font-semibold text-iptm-navy shadow-sm transition-all duration-300 hover:scale-105 hover:border-iptm-navy/40 hover:bg-iptm-light/30"
+              className="inline-flex items-center rounded-xl border border-iptm-navy/20 bg-white px-8 py-4 text-lg font-semibold text-iptm-navy shadow-sm transition-all duration-300 hover:scale-105 hover:border-iptm-navy/40 hover:bg-iptm-light/30 hover:cursor-pointer"
             >
               ดูรีวิวจากศิษย์เก่า
             </Link>

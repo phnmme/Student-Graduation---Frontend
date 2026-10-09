@@ -30,7 +30,7 @@ export default function LogPage() {
           <p className="text-sm text-white/60">
             {authState === "checking" ? "กำลังตรวจสอบสิทธิ์..." : "บัญชีนี้ไม่มีสิทธิ์เข้าหน้าผู้ดูแลระบบ"}
           </p>
-          {authState === "denied" && <Link href="/" className="text-sm underline text-white">กลับหน้าหลัก</Link>}
+          {authState === "denied" && <Link href="/" className="text-sm underline text-white hover:cursor-pointer">กลับหน้าหลัก</Link>}
         </div>
       </div>
     );

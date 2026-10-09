@@ -47,7 +47,7 @@ export function ProfileInfoCard({ profile, employmentHistory, onManageHistory }:
           <p className="font-semibold text-bluez-tone-1">ประวัติการทำงาน</p>
           <p className="mt-1 text-sm text-slate-600">{employmentHistory.length ? `มีประวัติงาน ${employmentHistory.length} รายการ` : "เพิ่มประวัติตำแหน่งงานที่ผ่านมาได้ที่นี่"}</p>
         </div>
-        <button type="button" onClick={onManageHistory} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-bluez-tone-3 px-4 py-2 text-sm font-semibold text-bluez-tone-3 transition hover:bg-bluez-tone-3 hover:text-white">
+        <button type="button" onClick={onManageHistory} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-bluez-tone-3 px-4 py-2 text-sm font-semibold text-bluez-tone-3 transition hover:bg-bluez-tone-3 hover:text-white hover:cursor-pointer">
           <History className="h-4 w-4" />จัดการประวัติงาน
         </button>
       </div>

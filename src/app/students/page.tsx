@@ -38,7 +38,7 @@ export default function StudentsPage() {
           </div>
           <button
             onClick={() => window.location.reload()}
-            className="mt-4 px-4 py-2 bg-iptm-white text-white rounded-lg hover:bg-bluez-tone-2 transition"
+            className="mt-4 px-4 py-2 bg-iptm-white text-white rounded-lg hover:bg-bluez-tone-2 transition hover:cursor-pointer"
           >
             ลองใหม่อีกครั้ง
           </button>

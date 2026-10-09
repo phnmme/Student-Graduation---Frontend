@@ -162,13 +162,13 @@ function AddAdminModal({ onClose, onSubmit, loading }: AddAdminModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm hover:cursor-pointer"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className="bg-iptm-white border border-iptm-light rounded-2xl p-6 sm:p-8 w-full max-w-md relative shadow-2xl">
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 text-iptm-gray hover:text-iptm-black p-1.5 rounded-xl hover:bg-iptm-light transition-colors"
+          className="absolute right-4 top-4 text-iptm-gray hover:text-iptm-black p-1.5 rounded-xl hover:bg-iptm-light transition-colors hover:cursor-pointer"
           aria-label="ปิด"
         >
           <X size={18} />
@@ -199,14 +199,14 @@ function AddAdminModal({ onClose, onSubmit, loading }: AddAdminModalProps) {
           <div className="flex gap-3 pt-1">
             <button
               onClick={onClose}
-              className="flex-1 bg-iptm-light hover:bg-iptm-light/80 text-iptm-dark-gray py-3 rounded-xl text-sm font-semibold transition-colors"
+              className="flex-1 bg-iptm-light hover:bg-iptm-light/80 text-iptm-dark-gray py-3 rounded-xl text-sm font-semibold transition-colors hover:cursor-pointer"
             >
               ยกเลิก
             </button>
             <button
               onClick={handleSubmit}
               disabled={!email.trim() || loading}
-              className="flex-1 bg-iptm-gold hover:bg-iptm-gold/90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-iptm-white py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-md"
+              className="flex-1 bg-iptm-gold hover:bg-iptm-gold/90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed text-iptm-white py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-md hover:cursor-pointer"
             >
               {loading ? (
                 <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
@@ -240,14 +240,14 @@ function DeleteConfirmInline({
       </span>
       <button
         onClick={onConfirm}
-        className="text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg font-semibold transition-colors flex items-center gap-1"
+        className="text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg font-semibold transition-colors flex items-center gap-1 hover:cursor-pointer"
       >
         <AlertTriangle size={11} />
         ยืนยัน
       </button>
       <button
         onClick={onCancel}
-        className="text-xs bg-iptm-light hover:bg-iptm-light/80 text-iptm-dark-gray px-3 py-1.5 rounded-lg font-medium transition-colors"
+        className="text-xs bg-iptm-light hover:bg-iptm-light/80 text-iptm-dark-gray px-3 py-1.5 rounded-lg font-medium transition-colors hover:cursor-pointer"
       >
         ยกเลิก
       </button>
@@ -369,7 +369,7 @@ export default function AdminPage() {
         {pageError && (
           <div role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 flex items-center justify-between gap-3">
             <span>{pageError}</span>
-            <button onClick={() => setPageError(null)} aria-label="ปิดข้อความ" className="shrink-0"><X size={16} /></button>
+            <button onClick={() => setPageError(null)} aria-label="ปิดข้อความ" className="shrink-0 hover:cursor-pointer"><X size={16} /></button>
           </div>
         )}
 
@@ -474,7 +474,7 @@ export default function AdminPage() {
                         <button
                           onClick={() => setDeleteConfirmId(admin.id)}
                           disabled={deleteLoadingId === admin.id}
-                          className="opacity-0 group-hover:opacity-100 text-iptm-gray hover:text-red-500 hover:bg-red-50 p-2 rounded-xl border border-transparent hover:border-red-100 disabled:opacity-50 transition-all"
+                          className="opacity-0 group-hover:opacity-100 text-iptm-gray hover:text-red-500 hover:bg-red-50 p-2 rounded-xl border border-transparent hover:border-red-100 disabled:opacity-50 transition-all hover:cursor-pointer"
                           aria-label={`ถอดสิทธิ์ ${fullName}`}
                         >
                           <Trash2 size={15} />
@@ -536,14 +536,14 @@ export default function AdminPage() {
                           <button
                             onClick={() => handleDeleteAdmin(admin.id)}
                             disabled={deleteLoadingId === admin.id}
-                            className="text-xs bg-red-500 text-white px-2 py-1.5 rounded-lg disabled:opacity-50"
+                            className="text-xs bg-red-500 text-white px-2 py-1.5 rounded-lg disabled:opacity-50 hover:cursor-pointer"
                           >
                             {deleteLoadingId === admin.id ? "กำลังทำ..." : "ยืนยัน"}
                           </button>
                           <button
                             onClick={() => setDeleteConfirmId(null)}
                             disabled={deleteLoadingId === admin.id}
-                            className="text-xs bg-iptm-light text-iptm-dark-gray px-2 py-1.5 rounded-lg"
+                            className="text-xs bg-iptm-light text-iptm-dark-gray px-2 py-1.5 rounded-lg hover:cursor-pointer"
                           >
                             ยกเลิก
                           </button>
@@ -551,7 +551,7 @@ export default function AdminPage() {
                       ) : (
                         <button
                           onClick={() => setDeleteConfirmId(admin.id)}
-                          className="text-iptm-gray hover:text-red-500 p-2 rounded-xl hover:bg-red-50 transition-colors"
+                          className="text-iptm-gray hover:text-red-500 p-2 rounded-xl hover:bg-red-50 transition-colors hover:cursor-pointer"
                           aria-label={`ถอดสิทธิ์ ${fullName}`}
                         >
                           <Trash2 size={15} />

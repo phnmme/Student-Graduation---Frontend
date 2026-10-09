@@ -30,7 +30,7 @@ export default function ReviewPage() {
           <p className="text-sm text-iptm-dark-gray">
             {authState === "checking" ? "กำลังตรวจสอบสิทธิ์..." : "บัญชีนี้ไม่มีสิทธิ์เข้าหน้าผู้ดูแลระบบ"}
           </p>
-          {authState === "denied" && <Link href="/" className="text-sm underline text-iptm-navy">กลับหน้าหลัก</Link>}
+          {authState === "denied" && <Link href="/" className="text-sm underline text-iptm-navy hover:cursor-pointer">กลับหน้าหลัก</Link>}
         </div>
       </div>
     );

@@ -106,7 +106,7 @@ export default function ApprovedReviewsPage() {
             </div>
             <Link
               href="/reviews"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10 hover:cursor-pointer"
             >
               <BookOpen size={17} />
               แบ่งปันประสบการณ์ของคุณ
@@ -133,7 +133,7 @@ export default function ApprovedReviewsPage() {
             </label>
             <button
               type="submit"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-iptm-navy px-5 py-3 text-sm font-semibold text-white transition hover:bg-iptm-navy/90"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-iptm-navy px-5 py-3 text-sm font-semibold text-white transition hover:bg-iptm-navy/90 hover:cursor-pointer"
             >
               <Search size={16} />
               ค้นหา
@@ -143,7 +143,7 @@ export default function ApprovedReviewsPage() {
           <div className="mt-4 flex flex-wrap gap-2">
             <button
               onClick={() => changeCategory("all")}
-              className={`rounded-full border px-4 py-2 text-xs font-semibold transition ${
+              className={`hover:cursor-pointer rounded-full border px-4 py-2 text-xs font-semibold transition ${
                 category === "all"
                   ? "border-iptm-navy bg-iptm-navy text-white"
                   : "border-iptm-light bg-white text-iptm-dark-gray hover:border-iptm-navy/40"
@@ -153,7 +153,7 @@ export default function ApprovedReviewsPage() {
             </button>
             <button
               onClick={() => changeCategory("CAREER_PREP")}
-              className={`rounded-full border px-4 py-2 text-xs font-semibold transition ${
+              className={`hover:cursor-pointer rounded-full border px-4 py-2 text-xs font-semibold transition ${
                 category === "CAREER_PREP"
                   ? "border-iptm-navy bg-iptm-navy text-white"
                   : "border-iptm-light bg-white text-iptm-dark-gray hover:border-iptm-navy/40"
@@ -164,7 +164,7 @@ export default function ApprovedReviewsPage() {
             </button>
             <button
               onClick={() => changeCategory("CURRICULUM_IMPROVEMENT")}
-              className={`rounded-full border px-4 py-2 text-xs font-semibold transition ${
+              className={`hover:cursor-pointer rounded-full border px-4 py-2 text-xs font-semibold transition ${
                 category === "CURRICULUM_IMPROVEMENT"
                   ? "border-iptm-gold bg-iptm-gold text-white"
                   : "border-iptm-light bg-white text-iptm-dark-gray hover:border-iptm-gold/50"
@@ -189,7 +189,7 @@ export default function ApprovedReviewsPage() {
             onClick={() => void loadReviews()}
             disabled={loading}
             aria-label="โหลดรีวิวใหม่"
-            className="inline-flex items-center gap-2 rounded-lg border border-iptm-light px-3 py-2 text-xs font-medium text-iptm-dark-gray transition hover:bg-iptm-light/40 disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg border border-iptm-light px-3 py-2 text-xs font-medium text-iptm-dark-gray transition hover:bg-iptm-light/40 disabled:opacity-50 hover:cursor-pointer"
           >
             <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
             รีเฟรช
@@ -199,7 +199,7 @@ export default function ApprovedReviewsPage() {
         {error && (
           <div className="mb-5 flex items-center justify-between gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             <span>{error}</span>
-            <button onClick={() => void loadReviews()} className="font-semibold underline">
+            <button onClick={() => void loadReviews()} className="font-semibold underline hover:cursor-pointer">
               ลองอีกครั้ง
             </button>
           </div>
@@ -298,7 +298,7 @@ export default function ApprovedReviewsPage() {
                 <button
                   onClick={() => setPage((current) => Math.max(1, current - 1))}
                   disabled={page <= 1 || loading}
-                  className="inline-flex items-center gap-1 rounded-xl border border-iptm-light px-4 py-2.5 text-sm font-medium text-iptm-navy transition hover:bg-iptm-light/40 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="inline-flex items-center gap-1 rounded-xl border border-iptm-light px-4 py-2.5 text-sm font-medium text-iptm-navy transition hover:bg-iptm-light/40 disabled:cursor-not-allowed disabled:opacity-40 hover:cursor-pointer"
                 >
                   <ChevronLeft size={16} />
                   ก่อนหน้า
@@ -308,7 +308,7 @@ export default function ApprovedReviewsPage() {
                     setPage((current) => Math.min(pagination.totalPages, current + 1))
                   }
                   disabled={page >= pagination.totalPages || loading}
-                  className="inline-flex items-center gap-1 rounded-xl border border-iptm-light px-4 py-2.5 text-sm font-medium text-iptm-navy transition hover:bg-iptm-light/40 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="inline-flex items-center gap-1 rounded-xl border border-iptm-light px-4 py-2.5 text-sm font-medium text-iptm-navy transition hover:bg-iptm-light/40 disabled:cursor-not-allowed disabled:opacity-40 hover:cursor-pointer"
                 >
                   ถัดไป
                   <ChevronRight size={16} />

@@ -321,7 +321,7 @@ export default function Register() {
           <span className="text-iptm-dark-gray">มีบัญชีอยู่แล้ว?</span>
           <a
             href="/login"
-            className="font-bold text-iptm-gold hover:underline hover:text-iptm-gold/90 transition-colors"
+            className="font-bold text-iptm-gold hover:underline hover:text-iptm-gold/90 transition-colors hover:cursor-pointer"
           >
             เข้าสู่ระบบ
           </a>

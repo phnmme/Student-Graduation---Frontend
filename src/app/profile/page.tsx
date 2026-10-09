@@ -59,7 +59,7 @@ export default function Page() {
           </div>
           <button
             onClick={() => router.push("/login")}
-            className="mt-4 px-4 py-2 bg-iptm-blue text-white rounded-lg hover:bg-iptm-blue-dark transition"
+            className="mt-4 px-4 py-2 bg-iptm-blue text-white rounded-lg hover:bg-iptm-blue-dark transition hover:cursor-pointer"
           >
             กลับไปหน้าเข้าสู่ระบบ
           </button>

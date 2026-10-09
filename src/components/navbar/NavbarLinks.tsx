@@ -11,7 +11,7 @@ export default function NavbarLinks({ user }: { user?: User | null }) {
         <Link
           key={link.href}
           href={link.href}
-          className="text-congress-50 hover:text-[#80eeff] transition duration-600 "
+          className="text-congress-50 hover:text-[#80eeff] transition duration-600  hover:cursor-pointer"
         >
           {link.label}
         </Link>

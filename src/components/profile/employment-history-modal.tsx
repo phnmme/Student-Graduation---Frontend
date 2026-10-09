@@ -70,7 +70,7 @@ export function EmploymentHistoryModal({ open, history, onClose, onAdd, onDelete
             <h2 id="employment-history-title" className="text-xl font-bold text-bluez-tone-1">ประวัติการทำงาน</h2>
             <p className="mt-1 text-sm text-slate-500">เพิ่มและจัดการตำแหน่งงานที่ผ่านมา</p>
           </div>
-          <button type="button" onClick={onClose} aria-label="ปิดหน้าต่าง" className="rounded-lg p-2 text-slate-500 hover:bg-slate-100"><X className="h-5 w-5" /></button>
+          <button type="button" onClick={onClose} aria-label="ปิดหน้าต่าง" className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:cursor-pointer"><X className="h-5 w-5" /></button>
         </header>
 
         {error && <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
@@ -87,7 +87,7 @@ export function EmploymentHistoryModal({ open, history, onClose, onAdd, onDelete
                 <p className="mt-1 flex items-center gap-1.5 text-sm text-slate-500"><CalendarDays className="h-4 w-4" />เริ่มงาน พ.ศ. {item.startYear ?? "ไม่ระบุ"}</p>
                 {item.description && <p className="mt-2 whitespace-pre-wrap text-sm text-slate-600">{item.description}</p>}
               </div>
-              <button type="button" disabled={busy} onClick={() => void remove(item.id)} aria-label="ลบประวัติงาน" className="rounded-lg p-2 text-red-600 transition hover:bg-red-50 disabled:opacity-50"><Trash2 className="h-4 w-4" /></button>
+              <button type="button" disabled={busy} onClick={() => void remove(item.id)} aria-label="ลบประวัติงาน" className="rounded-lg p-2 text-red-600 transition hover:bg-red-50 disabled:opacity-50 hover:cursor-pointer"><Trash2 className="h-4 w-4" /></button>
             </article>
           ))}
         </div>
@@ -109,7 +109,7 @@ export function EmploymentHistoryModal({ open, history, onClose, onAdd, onDelete
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} maxLength={1000} rows={2} className="mt-1 w-full resize-y rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-bluez-tone-3 focus:ring-2 focus:ring-bluez-tone-3/20" placeholder="หน้าที่รับผิดชอบหรือผลงาน" />
           </label>
           <div className="flex justify-end">
-            <button type="submit" disabled={busy} className="inline-flex items-center gap-2 rounded-lg bg-bluez-tone-3 px-4 py-2 font-medium text-white transition hover:bg-bluez-tone-4 disabled:opacity-50"><Plus className="h-4 w-4" />{busy ? "กำลังบันทึก..." : "เพิ่มประวัติงาน"}</button>
+            <button type="submit" disabled={busy} className="inline-flex items-center gap-2 rounded-lg bg-bluez-tone-3 px-4 py-2 font-medium text-white transition hover:bg-bluez-tone-4 disabled:opacity-50 hover:cursor-pointer"><Plus className="h-4 w-4" />{busy ? "กำลังบันทึก..." : "เพิ่มประวัติงาน"}</button>
           </div>
         </form>
       </section>

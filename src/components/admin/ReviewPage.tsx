@@ -201,7 +201,7 @@ function StatTab({
   return (
     <button
       onClick={onClick}
-      className={`group flex flex-col items-start p-4 rounded-2xl border text-left transition-all shadow-sm ${
+      className={`hover:cursor-pointer group flex flex-col items-start p-4 rounded-2xl border text-left transition-all shadow-sm ${
         active
           ? accent
             ? "bg-iptm-gold/10 border-iptm-gold/30 ring-1 ring-iptm-gold/20"
@@ -267,7 +267,7 @@ function DetailModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm hover:cursor-pointer"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div
@@ -289,7 +289,7 @@ function DetailModal({
           </div>
           <button
             onClick={onClose}
-            className="text-iptm-gray hover:text-iptm-black p-1.5 rounded-xl hover:bg-iptm-light transition-colors"
+            className="text-iptm-gray hover:text-iptm-black p-1.5 rounded-xl hover:bg-iptm-light transition-colors hover:cursor-pointer"
           >
             <X size={16} />
           </button>
@@ -348,7 +348,7 @@ function DetailModal({
               <button
                 onClick={() => onAction(review.id, "rejected")}
                 disabled={isActioning}
-                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold bg-iptm-white hover:bg-red-50 text-red-500 border border-red-200 py-2.5 rounded-xl transition-all disabled:opacity-40"
+                className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold bg-iptm-white hover:bg-red-50 text-red-500 border border-red-200 py-2.5 rounded-xl transition-all disabled:opacity-40 hover:cursor-pointer"
               >
                 {isActioning ? (
                   <RefreshCw size={13} className="animate-spin" />
@@ -360,7 +360,7 @@ function DetailModal({
               <button
                 onClick={() => onAction(review.id, "approved")}
                 disabled={isActioning}
-                className="flex-1 flex items-center justify-center gap-2 text-sm font-bold bg-iptm-navy hover:bg-iptm-navy/90 active:scale-95 text-iptm-white py-2.5 rounded-xl transition-all shadow-md disabled:opacity-40"
+                className="flex-1 flex items-center justify-center gap-2 text-sm font-bold bg-iptm-navy hover:bg-iptm-navy/90 active:scale-95 text-iptm-white py-2.5 rounded-xl transition-all shadow-md disabled:opacity-40 hover:cursor-pointer"
               >
                 {isActioning ? (
                   <RefreshCw size={13} className="animate-spin" />
@@ -456,7 +456,7 @@ function ReviewCard({
                 onClick={() => onAction(review.id, "approved")}
                 disabled={isActioning}
                 title="อนุมัติ"
-                className="flex items-center gap-1 text-[11px] font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-2.5 py-1.5 rounded-lg transition-colors disabled:opacity-40"
+                className="flex items-center gap-1 text-[11px] font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 px-2.5 py-1.5 rounded-lg transition-colors disabled:opacity-40 hover:cursor-pointer"
               >
                 {isActioning ? (
                   <RefreshCw size={11} className="animate-spin" />
@@ -469,7 +469,7 @@ function ReviewCard({
                 onClick={() => onAction(review.id, "rejected")}
                 disabled={isActioning}
                 title="ปฏิเสธ"
-                className="flex items-center gap-1 text-[11px] font-semibold bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-2.5 py-1.5 rounded-lg transition-colors disabled:opacity-40"
+                className="flex items-center gap-1 text-[11px] font-semibold bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-2.5 py-1.5 rounded-lg transition-colors disabled:opacity-40 hover:cursor-pointer"
               >
                 {isActioning ? (
                   <RefreshCw size={11} className="animate-spin" />
@@ -484,7 +484,7 @@ function ReviewCard({
           <button
             onClick={() => onView(review.id)}
             title="ดูรายละเอียด"
-            className="opacity-0 group-hover:opacity-100 text-iptm-gray hover:text-iptm-navy hover:bg-iptm-light p-2 rounded-xl border border-transparent hover:border-iptm-light/60 transition-all"
+            className="opacity-0 group-hover:opacity-100 text-iptm-gray hover:text-iptm-navy hover:bg-iptm-light p-2 rounded-xl border border-transparent hover:border-iptm-light/60 transition-all hover:cursor-pointer"
           >
             <Eye size={14} />
           </button>
@@ -497,14 +497,14 @@ function ReviewCard({
           <button
             onClick={() => onAction(review.id, "approved")}
             disabled={isActioning}
-            className="flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 py-2 rounded-xl transition-colors"
+            className="flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 py-2 rounded-xl transition-colors hover:cursor-pointer"
           >
             <Check size={12} /> อนุมัติ
           </button>
           <button
             onClick={() => onAction(review.id, "rejected")}
             disabled={isActioning}
-            className="flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold bg-red-50 text-red-600 border border-red-200 py-2 rounded-xl transition-colors"
+            className="flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold bg-red-50 text-red-600 border border-red-200 py-2 rounded-xl transition-colors hover:cursor-pointer"
           >
             <X size={12} /> ปฏิเสธ
           </button>
@@ -543,7 +543,7 @@ function Pagination({ page, totalPages, loading, onChange }: PaginationProps) {
         <button
           onClick={() => onChange(Math.max(1, page - 1))}
           disabled={page === 1 || loading}
-          className="p-1.5 rounded-xl text-iptm-gray hover:text-iptm-navy hover:bg-iptm-light disabled:opacity-30 disabled:pointer-events-none transition-colors"
+          className="p-1.5 rounded-xl text-iptm-gray hover:text-iptm-navy hover:bg-iptm-light disabled:opacity-30 disabled:pointer-events-none transition-colors hover:cursor-pointer"
         >
           <ChevronLeft size={15} />
         </button>
@@ -551,7 +551,7 @@ function Pagination({ page, totalPages, loading, onChange }: PaginationProps) {
           <button
             key={p}
             onClick={() => onChange(p)}
-            className={`w-8 h-8 text-xs rounded-xl font-semibold transition-all ${
+            className={`hover:cursor-pointer w-8 h-8 text-xs rounded-xl font-semibold transition-all ${
               p === page
                 ? "bg-iptm-navy text-iptm-white shadow-sm"
                 : "text-iptm-dark-gray hover:text-iptm-navy hover:bg-iptm-light"
@@ -563,7 +563,7 @@ function Pagination({ page, totalPages, loading, onChange }: PaginationProps) {
         <button
           onClick={() => onChange(Math.min(totalPages, page + 1))}
           disabled={page === totalPages || loading}
-          className="p-1.5 rounded-xl text-iptm-gray hover:text-iptm-navy hover:bg-iptm-light disabled:opacity-30 disabled:pointer-events-none transition-colors"
+          className="p-1.5 rounded-xl text-iptm-gray hover:text-iptm-navy hover:bg-iptm-light disabled:opacity-30 disabled:pointer-events-none transition-colors hover:cursor-pointer"
         >
           <ChevronRight size={15} />
         </button>
@@ -823,7 +823,7 @@ export default function ReviewMainPage() {
                   setJobFieldFilter("all");
                   setCategoryFilter("all");
                 }}
-                className="flex items-center gap-1.5 text-xs text-iptm-dark-gray hover:text-iptm-black border border-iptm-light hover:bg-iptm-light bg-iptm-white px-3 py-2 rounded-xl transition-all shrink-0 shadow-sm"
+                className="flex items-center gap-1.5 text-xs text-iptm-dark-gray hover:text-iptm-black border border-iptm-light hover:bg-iptm-light bg-iptm-white px-3 py-2 rounded-xl transition-all shrink-0 shadow-sm hover:cursor-pointer"
               >
                 <X size={13} />
                 <span className="hidden sm:inline">ล้าง</span>

@@ -49,7 +49,7 @@ export default function Navbar({ user, loading = false, onLogout }: Props) {
 
             <button
               onClick={() => setIsOpen(true)}
-              className="lg:hidden p-2 rounded-md hover:bg-gray-100"
+              className="lg:hidden p-2 rounded-md hover:bg-gray-100 hover:cursor-pointer"
               aria-label="Open menu"
               disabled={loading}
             >

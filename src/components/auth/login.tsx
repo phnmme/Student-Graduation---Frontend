@@ -138,7 +138,7 @@ export default function Login() {
         <p className="text-sm text-iptm-dark-gray">ยังไม่มีบัญชีใช่ไหม?</p>
         <a
           href="/register"
-          className="text-sm font-bold text-iptm-gold hover:underline hover:text-iptm-gold/90 transition-colors"
+          className="text-sm font-bold text-iptm-gold hover:underline hover:text-iptm-gold/90 transition-colors hover:cursor-pointer"
         >
           สมัครสมาชิก
         </a>

@@ -20,7 +20,7 @@ export default function StudentYearPage({ params }: Props) {
           <p className="text-red-500 mb-4">ปีการศึกษาไม่ถูกต้อง</p>
           <button
             onClick={() => router.push("/students")}
-            className="px-4 py-2 bg-bluez-tone-3 text-white rounded-lg"
+            className="px-4 py-2 bg-bluez-tone-3 text-white rounded-lg hover:cursor-pointer"
           >
             กลับหน้าหลัก
           </button>

@@ -44,7 +44,7 @@ export default function MobileSidebar({
         <>
           {/* Overlay */}
           <motion.div
-            className="fixed inset-0 bg-black/40 z-60"
+            className="fixed inset-0 bg-black/40 z-60 hover:cursor-pointer"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -62,7 +62,7 @@ export default function MobileSidebar({
             {/* Header */}
             <div className="h-16 px-4 flex items-center justify-between border-b text-congress-50">
               <span className="font-bold text-lg">หน้าเมนู</span>
-              <button onClick={onClose} aria-label="ปิดเมนู">
+              <button onClick={onClose} aria-label="ปิดเมนู" className="hover:cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -74,7 +74,7 @@ export default function MobileSidebar({
                   key={link.href}
                   href={link.href}
                   onClick={onClose}
-                  className="text-congress-50 hover:text-black transition-colors"
+                  className="text-congress-50 hover:text-black transition-colors hover:cursor-pointer"
                 >
                   {link.label}
                 </Link>
@@ -93,7 +93,7 @@ export default function MobileSidebar({
                   {/* Toggle Accordion */}
                   <button
                     onClick={() => setAdminExpanded((prev) => !prev)}
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-400/30 text-amber-300 hover:bg-amber-500/20 transition"
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-400/30 text-amber-300 hover:bg-amber-500/20 transition hover:cursor-pointer"
                   >
                     <span className="text-sm font-medium">เมนูผู้ดูแลระบบ</span>
                     <ChevronDown
@@ -118,7 +118,7 @@ export default function MobileSidebar({
                               key={href}
                               href={href}
                               onClick={onClose}
-                              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-amber-200 hover:bg-amber-500/20 hover:text-amber-100 transition"
+                              className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-amber-200 hover:bg-amber-500/20 hover:text-amber-100 transition hover:cursor-pointer"
                             >
                               <Icon className="w-4 h-4" />
                               {label}
@@ -144,7 +144,7 @@ export default function MobileSidebar({
                   <Link
                     href="/login"
                     onClick={onClose}
-                    className="flex items-center gap-2 px-4 py-2 border hover:bg-bluez-tone-2 hover:text-bluez-tone-1 transition duration-300 rounded-md border-congress-50 text-congress-50"
+                    className="flex items-center gap-2 px-4 py-2 border hover:bg-bluez-tone-2 hover:text-bluez-tone-1 transition duration-300 rounded-md border-congress-50 text-congress-50 hover:cursor-pointer"
                   >
                     <LogIn className="w-4 h-4" />
                     เข้าสู่ระบบ
@@ -152,7 +152,7 @@ export default function MobileSidebar({
                   <Link
                     href="/register"
                     onClick={onClose}
-                    className="flex items-center gap-2 px-4 py-2 bg-bluez-tone-4 hover:bg-bluez-tone-5 hover:text-bluez-tone-1 duration-300 transition text-white rounded-md"
+                    className="flex items-center gap-2 px-4 py-2 bg-bluez-tone-4 hover:bg-bluez-tone-5 hover:text-bluez-tone-1 duration-300 transition text-white rounded-md hover:cursor-pointer"
                   >
                     <UserPlus className="w-4 h-4" />
                     สมัครสมาชิก
@@ -200,7 +200,7 @@ export default function MobileSidebar({
                   <Link
                     href="/profile"
                     onClick={onClose}
-                    className="flex items-center gap-2 px-4 py-2 border border-congress-50 text-congress-50 rounded-md hover:bg-bluez-tone-2 hover:text-bluez-tone-1 transition duration-300"
+                    className="flex items-center gap-2 px-4 py-2 border border-congress-50 text-congress-50 rounded-md hover:bg-bluez-tone-2 hover:text-bluez-tone-1 transition duration-300 hover:cursor-pointer"
                   >
                     <User className="w-4 h-4" />
                     โปรไฟล์
@@ -212,7 +212,7 @@ export default function MobileSidebar({
                       onLogout?.();
                       onClose();
                     }}
-                    className="flex items-center gap-2 px-4 py-2 border border-red-400 text-red-400 rounded-md hover:bg-red-50 hover:text-red-600 transition duration-300"
+                    className="flex items-center gap-2 px-4 py-2 border border-red-400 text-red-400 rounded-md hover:bg-red-50 hover:text-red-600 transition duration-300 hover:cursor-pointer"
                   >
                     <LogOut className="w-4 h-4" />
                     ออกจากระบบ

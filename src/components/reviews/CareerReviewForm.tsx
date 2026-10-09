@@ -95,7 +95,7 @@ export default function CareerReviewForm() {
                 disabled={isLoading}
                 onClick={() => setCategory("CAREER_PREP")}
                 aria-pressed={category === "CAREER_PREP"}
-                className={`flex items-start gap-3 p-4 text-left rounded-xl border transition-all ${category === "CAREER_PREP" ? "border-iptm-navy bg-iptm-navy/5 ring-1 ring-iptm-navy/15" : "border-iptm-light hover:border-iptm-navy/40"}`}
+                className={`hover:cursor-pointer flex items-start gap-3 p-4 text-left rounded-xl border transition-all ${category === "CAREER_PREP" ? "border-iptm-navy bg-iptm-navy/5 ring-1 ring-iptm-navy/15" : "border-iptm-light hover:border-iptm-navy/40"}`}
               >
                 <span className="rounded-lg bg-iptm-navy/10 text-iptm-navy p-2"><Building2 size={20} /></span>
                 <span className="flex-1">
@@ -109,7 +109,7 @@ export default function CareerReviewForm() {
                 disabled={isLoading}
                 onClick={() => setCategory("CURRICULUM_IMPROVEMENT")}
                 aria-pressed={category === "CURRICULUM_IMPROVEMENT"}
-                className={`flex items-start gap-3 p-4 text-left rounded-xl border transition-all ${category === "CURRICULUM_IMPROVEMENT" ? "border-iptm-gold bg-iptm-gold/5 ring-1 ring-iptm-gold/20" : "border-iptm-light hover:border-iptm-gold/50"}`}
+                className={`hover:cursor-pointer flex items-start gap-3 p-4 text-left rounded-xl border transition-all ${category === "CURRICULUM_IMPROVEMENT" ? "border-iptm-gold bg-iptm-gold/5 ring-1 ring-iptm-gold/20" : "border-iptm-light hover:border-iptm-gold/50"}`}
               >
                 <span className="rounded-lg bg-iptm-gold/10 text-iptm-gold p-2"><GraduationCap size={20} /></span>
                 <span className="flex-1">

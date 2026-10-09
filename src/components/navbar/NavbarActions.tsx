@@ -45,14 +45,14 @@ export default function NavbarActions({ user, onLogout }: Props) {
       <div className="flex gap-3">
         <Link
           href="/login"
-          className="flex items-center gap-2 px-4 py-2 border border-iptm-gold text-iptm-white hover:bg-iptm-white hover:text-iptm-dark-gray transition duration-300 rounded-md "
+          className="flex items-center gap-2 px-4 py-2 border border-iptm-gold text-iptm-white hover:bg-iptm-white hover:text-iptm-dark-gray transition duration-300 rounded-md  hover:cursor-pointer"
         >
           <LogIn className="w-4 h-4" />
           เข้าสู่ระบบ
         </Link>
         <Link
           href="/register"
-          className="flex items-center gap-2 px-4 py-2 bg-iptm-gold hover:bg-iptm-gold hover:text-iptm-navy duration-300 transition text-iptm-white rounded-md"
+          className="flex items-center gap-2 px-4 py-2 bg-iptm-gold hover:bg-iptm-gold hover:text-iptm-navy duration-300 transition text-iptm-white rounded-md hover:cursor-pointer"
         >
           <UserPlus className="w-4 h-4" />
           สมัครสมาชิก
@@ -69,7 +69,7 @@ export default function NavbarActions({ user, onLogout }: Props) {
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setDropdownOpen((prev) => !prev)}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg transition hover:bg-congress-600 group"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg transition hover:bg-congress-600 group hover:cursor-pointer"
           >
             <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-white text-sm font-semibold shadow-sm">
               {user?.name?.charAt(0).toUpperCase()}
@@ -94,7 +94,7 @@ export default function NavbarActions({ user, onLogout }: Props) {
               <Link
                 href="/profile"
                 onClick={() => setDropdownOpen(false)}
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition hover:cursor-pointer"
               >
                 <div className="w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center text-white text-xs font-semibold">
                   {user?.name?.charAt(0).toUpperCase()}
@@ -113,7 +113,7 @@ export default function NavbarActions({ user, onLogout }: Props) {
                   key={href}
                   href={href}
                   onClick={() => setDropdownOpen(false)}
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition"
+                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition hover:cursor-pointer"
                 >
                   <Icon className="w-4 h-4" />
                   {label}
@@ -125,7 +125,7 @@ export default function NavbarActions({ user, onLogout }: Props) {
       ) : (
         <Link
           href="/profile"
-          className="flex items-center gap-2 px-3 py-2 rounded-lg transition hover:bg-congress-600 group"
+          className="flex items-center gap-2 px-3 py-2 rounded-lg transition hover:bg-congress-600 group hover:cursor-pointer"
         >
           <div className="w-8 h-8 rounded-full bg-bluez-tone-4 flex items-center justify-center text-white text-sm font-semibold shadow-sm">
             {user?.name?.charAt(0).toUpperCase()}
